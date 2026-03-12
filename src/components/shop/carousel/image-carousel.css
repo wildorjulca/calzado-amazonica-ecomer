@@ -1,0 +1,53 @@
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* =========================
+   FLECHAS
+========================= */
+
+.image-carousel .swiper-button-next,
+.image-carousel .swiper-button-prev {
+  width: 20px;
+  height: 20px;
+  color: #000;
+  font-weight: bold;
+
+  /* 🔥 OCULTAS POR DEFECTO */
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* 👇 SOLO APARECEN AL HOVER */
+.image-carousel:hover .swiper-button-next,
+.image-carousel:hover .swiper-button-prev {
+  opacity: 1;
+}
+
+/* Tamaño del icono */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+  font-size: 14px;
+}
+
+/* Posición */
+.swiper-button-prev {
+  left: 8px;
+}
+
+.swiper-button-next {
+  right: 8px;
+}
+
+/* Hover visual */
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: black;
+}

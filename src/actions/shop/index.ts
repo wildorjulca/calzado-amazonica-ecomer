@@ -1,0 +1,1 @@
+export * from '@/src/actions/shop/products/getProductsAll'

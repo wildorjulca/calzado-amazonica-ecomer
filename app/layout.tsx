@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Logo from "@/src/components/shop/header/Logo";
+import Provider from "@/components/provider/provider";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,10 +27,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* <script src="https://sandbox-checkout.izipay.pe/payments/v1/js/index.js" defer></script>
+        <script src="https://static.micuentaweb.pe/static/js/authenticate-client/V1.0/kr-authenticate.umd.js" defer></script> */}
+
+        {/* SCRIPT DE CULQUI */}
+        {/* <script src="https://js.culqi.com/checkout-js" defer></script> */}
+
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Provider>
+          {children}
+        </Provider>
       </body>
     </html>
   );

@@ -1,0 +1,804 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model carrito {
+  id                Int               @id @default(autoincrement())
+  usuario_id        Int
+  variante_id       Int
+  cantidad          Int?              @default(1)
+  agregado_en       DateTime?         @default(now()) @db.Timestamp(0)
+  actualizado_en    DateTime?         @default(now()) @db.Timestamp(0)
+  usuario           usuario           @relation(fields: [usuario_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "carrito_ibfk_1")
+  variante_producto variante_producto @relation(fields: [variante_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "carrito_ibfk_2")
+
+  @@unique([usuario_id, variante_id], map: "uk_usuario_variante")
+  @@index([usuario_id], map: "idx_usuario")
+  @@index([variante_id], map: "variante_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model categoria {
+  id             Int            @id @default(autoincrement())
+  nombre         String         @unique(map: "nombre") @db.VarChar(50)
+  slug           String         @unique(map: "slug") @db.VarChar(50)
+  descripcion    String?        @db.Text
+  imagen_portada String?        @db.VarChar(255)
+  activo         Boolean?       @default(true)
+  creado_en      DateTime?      @default(now()) @db.Timestamp(0)
+  subcategoria   subcategoria[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model color {
+  id                   Int                    @id @default(autoincrement())
+  nombre               String                 @unique(map: "nombre") @db.VarChar(50)
+  slug                 String                 @unique(map: "slug") @db.VarChar(50)
+  codigo_hex           String?                @default("#CCCCCC") @db.VarChar(7)
+  activo               Boolean?               @default(true)
+  detalle_orden_compra detalle_orden_compra[]
+  producto_imagen      producto_imagen[]
+  variante_producto    variante_producto[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model cupon {
+  id                  Int                  @id @default(autoincrement())
+  codigo              String               @unique(map: "codigo") @db.VarChar(50)
+  descripcion         String?              @db.VarChar(255)
+  tipo_descuento      cupon_tipo_descuento
+  valor_descuento     Decimal              @db.Decimal(10, 2)
+  monto_minimo_compra Decimal?             @default(0.00) @db.Decimal(10, 2)
+  fecha_inicio        DateTime             @db.Date
+  fecha_fin           DateTime             @db.Date
+  usos_maximos        Int?
+  usos_por_usuario    Int?                 @default(1)
+  usos_actuales       Int?                 @default(0)
+  aplica_productos    String?              @db.Text
+  aplica_categorias   String?              @db.Text
+  aplica_marcas       String?              @db.Text
+  aplica_generos      String?              @db.Text
+  activo              Boolean?             @default(true)
+  creado_en           DateTime?            @default(now()) @db.Timestamp(0)
+  cupon_uso           cupon_uso[]
+  pedido              pedido[]
+
+  @@index([activo], map: "idx_activo")
+  @@index([codigo], map: "idx_codigo")
+  @@index([fecha_inicio, fecha_fin], map: "idx_fechas")
+}
+
+model cupon_uso {
+  id                 Int       @id @default(autoincrement())
+  cupon_id           Int
+  usuario_id         Int
+  pedido_id          Int?
+  descuento_aplicado Decimal   @db.Decimal(10, 2)
+  fecha_uso          DateTime? @default(now()) @db.Timestamp(0)
+  cupon              cupon     @relation(fields: [cupon_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cupon_uso_ibfk_1")
+  usuario            usuario   @relation(fields: [usuario_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "cupon_uso_ibfk_2")
+
+  @@index([cupon_id], map: "idx_cupon")
+  @@index([usuario_id], map: "idx_usuario")
+}
+
+model detalle_devolucion {
+  id                Int            @id @default(autoincrement())
+  devolucion_id     Int
+  detalle_pedido_id Int
+  cantidad          Int
+  motivo_especifico String?        @db.VarChar(255)
+  devolucion        devolucion     @relation(fields: [devolucion_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "detalle_devolucion_ibfk_1")
+  detalle_pedido    detalle_pedido @relation(fields: [detalle_pedido_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "detalle_devolucion_ibfk_2")
+
+  @@index([detalle_pedido_id], map: "detalle_pedido_id")
+  @@index([devolucion_id], map: "idx_devolucion")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model detalle_orden_compra {
+  id                     Int                @id @default(autoincrement())
+  orden_compra_id        Int
+  producto_id            Int
+  color_id               Int
+  talla_id               Int
+  cantidad_ordenada      Int
+  cantidad_recibida      Int?               @default(0)
+  precio_compra_unitario Decimal            @db.Decimal(10, 2)
+  subtotal               Decimal            @db.Decimal(10, 2)
+  variante_id            Int?
+  fecha_recepcion        DateTime?          @db.Timestamp(0)
+  notas                  String?            @db.VarChar(255)
+  orden_compra           orden_compra       @relation(fields: [orden_compra_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "detalle_orden_compra_ibfk_1")
+  producto               producto           @relation(fields: [producto_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "detalle_orden_compra_ibfk_2")
+  color                  color              @relation(fields: [color_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "detalle_orden_compra_ibfk_3")
+  talla                  talla              @relation(fields: [talla_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "detalle_orden_compra_ibfk_4")
+  variante_producto      variante_producto? @relation(fields: [variante_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "detalle_orden_compra_ibfk_5")
+
+  @@index([color_id], map: "color_id")
+  @@index([orden_compra_id], map: "idx_orden")
+  @@index([producto_id], map: "idx_producto")
+  @@index([talla_id], map: "talla_id")
+  @@index([variante_id], map: "variante_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model detalle_pedido {
+  id                 Int                  @id @default(autoincrement())
+  pedido_id          Int
+  variante_id        Int
+  producto_id        Int
+  cantidad           Int
+  precio_unitario    Decimal              @db.Decimal(10, 2)
+  costo_unitario     Decimal?             @default(0.00) @db.Decimal(10, 2)
+  subtotal           Decimal              @db.Decimal(10, 2)
+  detalle_devolucion detalle_devolucion[]
+  pedido             pedido               @relation(fields: [pedido_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "detalle_pedido_ibfk_1")
+  variante_producto  variante_producto    @relation(fields: [variante_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "detalle_pedido_ibfk_2")
+  producto           producto             @relation(fields: [producto_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "detalle_pedido_ibfk_3")
+
+  @@index([pedido_id], map: "idx_pedido")
+  @@index([producto_id], map: "idx_producto")
+  @@index([variante_id], map: "idx_variante")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model devolucion {
+  id                                     Int                          @id @default(autoincrement())
+  codigo_devolucion                      String                       @unique(map: "codigo_devolucion") @db.VarChar(20)
+  pedido_id                              Int
+  usuario_id                             Int
+  motivo                                 devolucion_motivo
+  descripcion                            String?                      @db.Text
+  estado                                 devolucion_estado?           @default(solicitada)
+  tipo_devolucion                        devolucion_tipo_devolucion
+  monto_devolver                         Decimal?                     @db.Decimal(10, 2)
+  metodo_reembolso                       devolucion_metodo_reembolso?
+  fecha_solicitud                        DateTime?                    @default(now()) @db.Timestamp(0)
+  fecha_aprobacion                       DateTime?                    @db.Timestamp(0)
+  fecha_recepcion                        DateTime?                    @db.Timestamp(0)
+  fecha_completada                       DateTime?                    @db.Timestamp(0)
+  notas_admin                            String?                      @db.Text
+  creado_por                             Int?
+  actualizado_en                         DateTime?                    @default(now()) @db.Timestamp(0)
+  detalle_devolucion                     detalle_devolucion[]
+  pedido                                 pedido                       @relation(fields: [pedido_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "devolucion_ibfk_1")
+  usuario_devolucion_usuario_idTousuario usuario                      @relation("devolucion_usuario_idTousuario", fields: [usuario_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "devolucion_ibfk_2")
+  usuario_devolucion_creado_porTousuario usuario?                     @relation("devolucion_creado_porTousuario", fields: [creado_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "devolucion_ibfk_3")
+
+  @@index([creado_por], map: "creado_por")
+  @@index([codigo_devolucion], map: "idx_codigo")
+  @@index([estado], map: "idx_estado")
+  @@index([pedido_id], map: "idx_pedido")
+  @@index([usuario_id], map: "idx_usuario")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model direccion_envio {
+  id           Int       @id @default(autoincrement())
+  usuario_id   Int
+  nombres      String    @db.VarChar(100)
+  apellidos    String    @db.VarChar(200)
+  telefono     String    @db.VarChar(20)
+  direccion    String    @db.Text
+  distrito_id  Int
+  referencia   String?   @db.Text
+  es_principal Boolean?  @default(false)
+  activo       Boolean?  @default(true)
+  creado_en    DateTime? @default(now()) @db.Timestamp(0)
+  usuario      usuario   @relation(fields: [usuario_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "direccion_envio_ibfk_1")
+  distrito     distrito  @relation(fields: [distrito_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "direccion_envio_ibfk_2")
+  pedido       pedido[]
+
+  @@index([distrito_id], map: "idx_distrito")
+  @@index([es_principal], map: "idx_principal")
+  @@index([usuario_id], map: "idx_usuario")
+}
+
+model distrito {
+  id              Int               @id @default(autoincrement())
+  nombre          String            @db.VarChar(100)
+  provincia_id    Int
+  activo          Boolean?          @default(true)
+  direccion_envio direccion_envio[]
+  provincia       provincia         @relation(fields: [provincia_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "distrito_ibfk_1")
+  proveedor       proveedor[]
+  usuario         usuario[]
+
+  @@index([provincia_id], map: "idx_provincia")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model genero_producto {
+  id        Int        @id @default(autoincrement())
+  nombre    String     @unique(map: "nombre") @db.VarChar(20)
+  slug      String     @unique(map: "slug") @db.VarChar(20)
+  icono     String?    @db.VarChar(50)
+  activo    Boolean?   @default(true)
+  creado_en DateTime?  @default(now()) @db.Timestamp(0)
+  producto  producto[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model historial_stock {
+  id                Int                             @id @default(autoincrement())
+  variante_id       Int
+  tipo_movimiento   historial_stock_tipo_movimiento
+  cantidad          Int
+  cantidad_anterior Int
+  cantidad_nueva    Int
+  motivo            String?                         @db.VarChar(255)
+  costo_unitario    Decimal?                        @db.Decimal(10, 2)
+  orden_compra_id   Int?
+  pedido_id         Int?
+  usuario_id        Int?
+  referencia        String?                         @db.VarChar(100)
+  creado_en         DateTime?                       @default(now()) @db.Timestamp(0)
+  variante_producto variante_producto               @relation(fields: [variante_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "historial_stock_ibfk_1")
+  usuario           usuario?                        @relation(fields: [usuario_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "historial_stock_ibfk_2")
+
+  @@index([creado_en], map: "idx_fecha")
+  @@index([tipo_movimiento], map: "idx_tipo")
+  @@index([variante_id], map: "idx_variante")
+  @@index([usuario_id], map: "usuario_id")
+}
+
+model marca {
+  id          Int        @id @default(autoincrement())
+  nombre      String     @unique(map: "nombre") @db.VarChar(50)
+  slug        String     @unique(map: "slug") @db.VarChar(50)
+  logo        String?    @db.VarChar(255)
+  descripcion String?    @db.Text
+  activo      Boolean?   @default(true)
+  creado_en   DateTime?  @default(now()) @db.Timestamp(0)
+  producto    producto[]
+}
+
+model notificacion {
+  id         Int               @id @default(autoincrement())
+  usuario_id Int
+  tipo       notificacion_tipo
+  titulo     String            @db.VarChar(150)
+  mensaje    String            @db.Text
+  link       String?           @db.VarChar(255)
+  leida      Boolean?          @default(false)
+  creado_en  DateTime?         @default(now()) @db.Timestamp(0)
+  usuario    usuario           @relation(fields: [usuario_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notificacion_ibfk_1")
+
+  @@index([creado_en], map: "idx_fecha")
+  @@index([leida], map: "idx_leida")
+  @@index([usuario_id], map: "idx_usuario")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model orden_compra {
+  id                     Int                       @id @default(autoincrement())
+  codigo_orden           String                    @unique(map: "codigo_orden") @db.VarChar(20)
+  proveedor_id           Int
+  usuario_creador_id     Int
+  fecha_orden            DateTime                  @db.Date
+  fecha_entrega_estimada DateTime?                 @db.Date
+  fecha_entrega_real     DateTime?                 @db.Date
+  subtotal               Decimal                   @db.Decimal(10, 2)
+  igv                    Decimal?                  @default(0.00) @db.Decimal(10, 2)
+  costo_envio            Decimal?                  @default(0.00) @db.Decimal(8, 2)
+  otros_costos           Decimal?                  @default(0.00) @db.Decimal(8, 2)
+  total                  Decimal                   @db.Decimal(10, 2)
+  estado                 orden_compra_estado?      @default(borrador)
+  metodo_pago            orden_compra_metodo_pago?
+  estado_pago            orden_compra_estado_pago? @default(pendiente)
+  factura_proveedor      String?                   @db.VarChar(100)
+  notas                  String?                   @db.Text
+  almacen_destino        String?                   @db.VarChar(100)
+  creado_en              DateTime?                 @default(now()) @db.Timestamp(0)
+  actualizado_en         DateTime?                 @default(now()) @db.Timestamp(0)
+  detalle_orden_compra   detalle_orden_compra[]
+  proveedor              proveedor                 @relation(fields: [proveedor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orden_compra_ibfk_1")
+  usuario                usuario                   @relation(fields: [usuario_creador_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orden_compra_ibfk_2")
+  pago_proveedor         pago_proveedor[]
+
+  @@index([codigo_orden], map: "idx_codigo")
+  @@index([estado], map: "idx_estado")
+  @@index([fecha_orden], map: "idx_fecha")
+  @@index([proveedor_id], map: "idx_proveedor")
+  @@index([usuario_creador_id], map: "usuario_creador_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model pago_proveedor {
+  id               Int                         @id @default(autoincrement())
+  orden_compra_id  Int
+  proveedor_id     Int
+  monto            Decimal                     @db.Decimal(10, 2)
+  metodo_pago      pago_proveedor_metodo_pago?
+  numero_operacion String?                     @db.VarChar(100)
+  fecha_pago       DateTime                    @db.Date
+  comprobante      String?                     @db.VarChar(255)
+  notas            String?                     @db.Text
+  creado_por       Int?
+  creado_en        DateTime?                   @default(now()) @db.Timestamp(0)
+  orden_compra     orden_compra                @relation(fields: [orden_compra_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "pago_proveedor_ibfk_1")
+  proveedor        proveedor                   @relation(fields: [proveedor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "pago_proveedor_ibfk_2")
+  usuario          usuario?                    @relation(fields: [creado_por], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "pago_proveedor_ibfk_3")
+
+  @@index([creado_por], map: "creado_por")
+  @@index([fecha_pago], map: "idx_fecha")
+  @@index([orden_compra_id], map: "idx_orden")
+  @@index([proveedor_id], map: "idx_proveedor")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model pedido {
+  id                 Int                      @id @default(autoincrement())
+  codigo_pedido      String                   @unique(map: "codigo_pedido") @db.VarChar(20)
+  usuario_id         Int
+  direccion_envio_id Int?
+  subtotal           Decimal                  @db.Decimal(10, 2)
+  costo_envio        Decimal?                 @default(0.00) @db.Decimal(8, 2)
+  descuento          Decimal?                 @default(0.00) @db.Decimal(8, 2)
+  cupon_id           Int?
+  igv                Decimal?                 @default(0.00) @db.Decimal(8, 2)
+  total              Decimal                  @db.Decimal(10, 2)
+  estado             pedido_estado?           @default(pendiente)
+  metodo_pago        pedido_metodo_pago?
+  estado_pago        pedido_estado_pago?      @default(pendiente)
+  comprobante_tipo   pedido_comprobante_tipo? @default(boleta)
+  comprobante_numero String?                  @db.VarChar(50)
+  telefono_contacto  String?                  @db.VarChar(20)
+  notas              String?                  @db.Text
+  fecha_confirmacion DateTime?                @db.Timestamp(0)
+  fecha_envio        DateTime?                @db.Timestamp(0)
+  fecha_entrega      DateTime?                @db.Timestamp(0)
+  codigo_seguimiento String?                  @db.VarChar(100)
+  empresa_envio      String?                  @db.VarChar(100)
+  creado_en          DateTime?                @default(now()) @db.Timestamp(0)
+  actualizado_en     DateTime?                @default(now()) @db.Timestamp(0)
+  detalle_pedido     detalle_pedido[]
+  devolucion         devolucion[]
+  usuario            usuario                  @relation(fields: [usuario_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "pedido_ibfk_1")
+  direccion_envio    direccion_envio?         @relation(fields: [direccion_envio_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "pedido_ibfk_2")
+  cupon              cupon?                   @relation(fields: [cupon_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "pedido_ibfk_3")
+  resena             resena[]
+
+  @@index([cupon_id], map: "cupon_id")
+  @@index([direccion_envio_id], map: "direccion_envio_id")
+  @@index([codigo_pedido], map: "idx_codigo")
+  @@index([estado], map: "idx_estado")
+  @@index([estado_pago], map: "idx_estado_pago")
+  @@index([creado_en], map: "idx_fecha")
+  @@index([usuario_id], map: "idx_usuario")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model producto {
+  id                   Int                    @id @default(autoincrement())
+  nombre               String                 @db.VarChar(100)
+  slug                 String                 @unique(map: "slug") @db.VarChar(100)
+  descripcion          String?                @db.Text
+  caracteristicas      String?                @db.Text
+  precio_base_venta    Decimal                @db.Decimal(10, 2)
+  precio_descuento     Decimal?               @db.Decimal(10, 2)
+  porcentaje_descuento Int?                   @default(0)
+  en_oferta            Boolean?               @default(false)
+  subcategoria_id      Int
+  genero_id            Int
+  marca_id             Int?
+  material_principal   String?                @db.VarChar(100)
+  material_suela       String?                @db.VarChar(100)
+  material_interior    String?                @db.VarChar(100)
+  tipo_cierre          String?                @db.VarChar(50)
+  altura_taco_cm       Decimal?               @db.Decimal(4, 2)
+  peso_gramos          Int?
+  impermeable          Boolean?               @default(false)
+  pais_fabricacion     String?                @db.VarChar(50)
+  garantia_meses       Int?                   @default(3)
+  rating_promedio      Decimal?               @default(0.00) @db.Decimal(3, 2)
+  total_resenas        Int?                   @default(0)
+  total_vendidos       Int?                   @default(0)
+  total_vistas         Int?                   @default(0)
+  costo_promedio       Decimal?               @default(0.00) @db.Decimal(10, 2)
+  margen_ganancia      Decimal?               @default(0.00) @db.Decimal(5, 2)
+  destacado            Boolean?               @default(false)
+  nuevo                Boolean?               @default(true)
+  activo               Boolean?               @default(true)
+  fecha_lanzamiento    DateTime?              @db.Date
+  creado_en            DateTime?              @default(now()) @db.Timestamp(0)
+  actualizado_en       DateTime?              @default(now()) @db.Timestamp(0)
+  precio_base_compra   Decimal?               @db.Decimal(10, 2)
+  detalle_orden_compra detalle_orden_compra[]
+  detalle_pedido       detalle_pedido[]
+  genero_producto      genero_producto        @relation(fields: [genero_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_producto_genero")
+  subcategoria         subcategoria           @relation(fields: [subcategoria_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "producto_ibfk_1")
+  marca                marca?                 @relation(fields: [marca_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "producto_ibfk_2")
+  producto_imagen      producto_imagen[]
+  producto_proveedor   producto_proveedor[]
+  resena               resena[]
+  variante_producto    variante_producto[]
+  wishlist             wishlist[]
+
+  @@index([activo], map: "idx_activo")
+  @@index([destacado, activo], map: "idx_destacado")
+  @@index([marca_id], map: "idx_marca")
+  @@index([precio_descuento, en_oferta], map: "idx_precios")
+  @@index([rating_promedio], map: "idx_rating")
+  @@index([slug], map: "idx_slug")
+  @@index([subcategoria_id], map: "idx_subcategoria")
+  @@index([genero_id], map: "fk_producto_genero")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model producto_imagen {
+  id           Int       @id @default(autoincrement())
+  producto_id  Int
+  color_id     Int
+  url_imagen   String    @db.VarChar(255)
+  orden        Int?      @default(0)
+  es_principal Boolean?  @default(false)
+  creado_en    DateTime? @default(now()) @db.Timestamp(0)
+  producto     producto  @relation(fields: [producto_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "producto_imagen_ibfk_1")
+  color        color     @relation(fields: [color_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "producto_imagen_ibfk_2")
+
+  @@index([color_id], map: "color_id")
+  @@index([es_principal], map: "idx_principal")
+  @@index([producto_id, color_id], map: "idx_producto_color")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model producto_proveedor {
+  id                    Int       @id @default(autoincrement())
+  producto_id           Int
+  proveedor_id          Int
+  precio_compra         Decimal   @db.Decimal(10, 2)
+  tiempo_entrega_dias   Int?      @default(7)
+  cantidad_minima_orden Int?      @default(1)
+  proveedor_principal   Boolean?  @default(false)
+  codigo_proveedor      String?   @db.VarChar(50)
+  activo                Boolean?  @default(true)
+  ultima_compra         DateTime? @db.Date
+  creado_en             DateTime? @default(now()) @db.Timestamp(0)
+  producto              producto  @relation(fields: [producto_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "producto_proveedor_ibfk_1")
+  proveedor             proveedor @relation(fields: [proveedor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "producto_proveedor_ibfk_2")
+
+  @@unique([producto_id, proveedor_id], map: "uk_producto_proveedor")
+  @@index([producto_id], map: "idx_producto")
+  @@index([proveedor_id], map: "idx_proveedor")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model proveedor {
+  id                  Int                  @id @default(autoincrement())
+  nombre              String               @db.VarChar(100)
+  razon_social        String?              @db.VarChar(150)
+  ruc                 String?              @unique(map: "ruc") @db.VarChar(11)
+  email               String?              @db.VarChar(100)
+  telefono            String?              @db.VarChar(20)
+  direccion           String?              @db.Text
+  distrito_id         Int?
+  pais                String?              @default("Perú") @db.VarChar(50)
+  contacto_nombre     String?              @db.VarChar(100)
+  contacto_telefono   String?              @db.VarChar(20)
+  contacto_email      String?              @db.VarChar(100)
+  tiempo_entrega_dias Int?                 @default(7)
+  calificacion        Decimal?             @default(0.00) @db.Decimal(3, 2)
+  total_ordenes       Int?                 @default(0)
+  notas               String?              @db.Text
+  activo              Boolean?             @default(true)
+  creado_en           DateTime?            @default(now()) @db.Timestamp(0)
+  actualizado_en      DateTime?            @default(now()) @db.Timestamp(0)
+  orden_compra        orden_compra[]
+  pago_proveedor      pago_proveedor[]
+  producto_proveedor  producto_proveedor[]
+  distrito            distrito?            @relation(fields: [distrito_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "proveedor_ibfk_1")
+
+  @@index([activo], map: "idx_activo")
+  @@index([calificacion], map: "idx_calificacion")
+  @@index([distrito_id], map: "idx_distrito")
+}
+
+model provincia {
+  id        Int        @id @default(autoincrement())
+  nombre    String     @db.VarChar(100)
+  region_id Int
+  activo    Boolean?   @default(true)
+  distrito  distrito[]
+  region    region     @relation(fields: [region_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "provincia_ibfk_1")
+
+  @@index([region_id], map: "idx_region")
+}
+
+model region {
+  id        Int         @id @default(autoincrement())
+  nombre    String      @unique(map: "nombre") @db.VarChar(100)
+  activo    Boolean?    @default(true)
+  provincia provincia[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model resena {
+  id                Int                @id @default(autoincrement())
+  producto_id       Int
+  usuario_id        Int
+  pedido_id         Int?
+  variante_id       Int?
+  rating            Int
+  titulo            String?            @db.VarChar(150)
+  comentario        String?            @db.Text
+  ventajas          String?            @db.Text
+  desventajas       String?            @db.Text
+  aprobada          Boolean?           @default(false)
+  util_count        Int?               @default(0)
+  creado_en         DateTime?          @default(now()) @db.Timestamp(0)
+  actualizado_en    DateTime?          @default(now()) @db.Timestamp(0)
+  producto          producto           @relation(fields: [producto_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "resena_ibfk_1")
+  usuario           usuario            @relation(fields: [usuario_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "resena_ibfk_2")
+  pedido            pedido?            @relation(fields: [pedido_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "resena_ibfk_3")
+  variante_producto variante_producto? @relation(fields: [variante_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "resena_ibfk_4")
+
+  @@index([aprobada], map: "idx_aprobada")
+  @@index([producto_id], map: "idx_producto")
+  @@index([rating], map: "idx_rating")
+  @@index([usuario_id], map: "idx_usuario")
+  @@index([pedido_id], map: "pedido_id")
+  @@index([variante_id], map: "variante_id")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model subcategoria {
+  id             Int        @id @default(autoincrement())
+  nombre         String     @db.VarChar(50)
+  slug           String     @unique(map: "slug") @db.VarChar(100)
+  categoria_id   Int
+  imagen_portada String?    @db.VarChar(255)
+  descripcion    String?    @db.Text
+  activo         Boolean?   @default(true)
+  creado_en      DateTime?  @default(now()) @db.Timestamp(0)
+  producto       producto[]
+  categoria      categoria  @relation(fields: [categoria_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "subcategoria_ibfk_1")
+
+  @@unique([nombre, categoria_id], map: "uk_nombre_categoria_genero")
+  @@index([activo], map: "idx_activo")
+  @@index([categoria_id], map: "idx_categoria")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model talla {
+  id                   Int                    @id @default(autoincrement())
+  valor                String                 @unique(map: "valor") @db.VarChar(10)
+  activo               Boolean?               @default(true)
+  detalle_orden_compra detalle_orden_compra[]
+  variante_producto    variante_producto[]
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model usuario {
+  id                                        Int                     @id @default(autoincrement())
+  nombre                                    String                  @db.VarChar(100)
+  apellido                                  String?                 @db.VarChar(100)
+  email                                     String                  @unique(map: "email") @db.VarChar(100)
+  password_hash                             String?                 @db.VarChar(255)
+  telefono                                  String?                 @db.VarChar(20)
+  documento_tipo                            usuario_documento_tipo? @default(DNI)
+  documento_numero                          String?                 @db.VarChar(20)
+  fecha_nacimiento                          DateTime?               @db.Date
+  genero                                    usuario_genero?
+  direccion                                 String?                 @db.Text
+  distrito_id                               Int?
+  referencia_direccion                      String?                 @db.Text
+  rol                                       usuario_rol?            @default(cliente)
+  email_verificado                          Boolean?                @default(false)
+  telefono_verificado                       Boolean?                @default(false)
+  avatar                                    String?                 @db.VarChar(255)
+  activo                                    Boolean?                @default(true)
+  creado_en                                 DateTime?               @default(now()) @db.Timestamp(0)
+  actualizado_en                            DateTime?               @default(now()) @db.Timestamp(0)
+  ultimo_login                              DateTime?               @db.Timestamp(0)
+  carrito                                   carrito[]
+  cupon_uso                                 cupon_uso[]
+  devolucion_devolucion_usuario_idTousuario devolucion[]            @relation("devolucion_usuario_idTousuario")
+  devolucion_devolucion_creado_porTousuario devolucion[]            @relation("devolucion_creado_porTousuario")
+  direccion_envio                           direccion_envio[]
+  historial_stock                           historial_stock[]
+  notificacion                              notificacion[]
+  orden_compra                              orden_compra[]
+  pago_proveedor                            pago_proveedor[]
+  pedido                                    pedido[]
+  resena                                    resena[]
+  distrito                                  distrito?               @relation(fields: [distrito_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "usuario_ibfk_1")
+  wishlist                                  wishlist[]
+
+  @@index([activo], map: "idx_activo")
+  @@index([distrito_id], map: "idx_distrito")
+  @@index([documento_numero], map: "idx_documento")
+  @@index([email], map: "idx_email")
+  @@index([rol], map: "idx_rol")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model variante_producto {
+  id                   Int                    @id @default(autoincrement())
+  producto_id          Int
+  color_id             Int
+  talla_id             Int
+  codigo_barras        String?                @db.VarChar(50)
+  precio_extra         Decimal?               @default(0.00) @db.Decimal(8, 2)
+  costo_compra         Decimal?               @default(0.00) @db.Decimal(10, 2)
+  cantidad             Int?                   @default(0)
+  cantidad_minima      Int?                   @default(5)
+  cantidad_maxima      Int?                   @default(100)
+  ubicacion_almacen    String?                @db.VarChar(50)
+  activo               Boolean?               @default(true)
+  ultima_entrada       DateTime?              @db.Timestamp(0)
+  ultima_salida        DateTime?              @db.Timestamp(0)
+  creado_en            DateTime?              @default(now()) @db.Timestamp(0)
+  actualizado_en       DateTime?              @default(now()) @db.Timestamp(0)
+  carrito              carrito[]
+  detalle_orden_compra detalle_orden_compra[]
+  detalle_pedido       detalle_pedido[]
+  historial_stock      historial_stock[]
+  resena               resena[]
+  producto             producto               @relation(fields: [producto_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "variante_producto_ibfk_1")
+  color                color                  @relation(fields: [color_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "variante_producto_ibfk_2")
+  talla                talla                  @relation(fields: [talla_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "variante_producto_ibfk_3")
+
+  @@unique([producto_id, color_id, talla_id], map: "uk_producto_color_talla")
+  @@index([color_id], map: "color_id")
+  @@index([activo], map: "idx_activo")
+  @@index([producto_id], map: "idx_producto")
+  @@index([cantidad], map: "idx_stock")
+  @@index([cantidad, cantidad_minima], map: "idx_stock_bajo")
+  @@index([talla_id], map: "talla_id")
+}
+
+model wishlist {
+  id          Int       @id @default(autoincrement())
+  usuario_id  Int
+  producto_id Int
+  agregado_en DateTime? @default(now()) @db.Timestamp(0)
+  usuario     usuario   @relation(fields: [usuario_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "wishlist_ibfk_1")
+  producto    producto  @relation(fields: [producto_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "wishlist_ibfk_2")
+
+  @@unique([usuario_id, producto_id], map: "uk_usuario_producto")
+  @@index([producto_id], map: "idx_producto")
+  @@index([usuario_id], map: "idx_usuario")
+}
+
+enum historial_stock_tipo_movimiento {
+  ENTRADA
+  SALIDA
+  AJUSTE
+  DEVOLUCION
+  VENTA
+  COMPRA
+}
+
+enum notificacion_tipo {
+  pedido
+  promocion
+  stock
+  devolucion
+  sistema
+}
+
+enum cupon_tipo_descuento {
+  porcentaje
+  monto_fijo
+  envio_gratis
+}
+
+enum devolucion_motivo {
+  talla_incorrecta
+  producto_defectuoso
+  no_satisfecho
+  error_pedido
+  otro
+}
+
+enum pago_proveedor_metodo_pago {
+  efectivo
+  transferencia
+  cheque
+  credito
+}
+
+enum devolucion_estado {
+  solicitada
+  aprobada
+  rechazada
+  en_proceso
+  completada
+  cancelada
+}
+
+enum usuario_documento_tipo {
+  DNI
+  CE
+  PASAPORTE
+  RUC
+}
+
+enum devolucion_tipo_devolucion {
+  reembolso
+  cambio
+}
+
+enum devolucion_metodo_reembolso {
+  mismo_metodo
+  transferencia
+  nota_credito
+}
+
+enum usuario_genero {
+  MASCULINO
+  FEMENINO
+  OTRO
+  PREFIERO_NO_DECIR
+}
+
+enum pedido_estado {
+  pendiente
+  confirmado
+  preparando
+  enviado
+  entregado
+  cancelado
+}
+
+enum pedido_metodo_pago {
+  tarjeta
+  yape
+  plin
+  transferencia
+  contra_entrega
+  mercado_pago
+  paypal
+}
+
+enum orden_compra_estado {
+  borrador
+  enviada
+  confirmada
+  en_transito
+  recibida_parcial
+  recibida_completa
+  cancelada
+}
+
+enum pedido_estado_pago {
+  pendiente
+  pagado
+  rechazado
+  reembolsado
+}
+
+enum orden_compra_metodo_pago {
+  contado
+  credito_15
+  credito_30
+  credito_45
+  credito_60
+}
+
+enum pedido_comprobante_tipo {
+  boleta
+  factura
+}
+
+enum usuario_rol {
+  cliente
+  admin
+  vendedor
+  almacenero
+}
+
+enum orden_compra_estado_pago {
+  pendiente
+  pagado_parcial
+  pagado_completo
+}
