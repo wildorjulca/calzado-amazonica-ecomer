@@ -6,13 +6,29 @@ import { prisma } from "@/lib"
 
 interface Props {
     query?: string
+
+    //  Paginacion
+    page?: number;
+    take?: number;
+
 }
 
 
-export const getProductsAll = async ({ query }: Props) => {
+export const getProductsAll = async ({
+    query,
+    page = 1,
+    take = 6,
+
+}: Props) => {
+
 
     const session = await auth()
     const userId = Number(session?.user?.id)
+
+
+
+    if (isNaN(Number(page))) page = 1;
+    if (page < 1) page = 1
 
     const where: Prisma.productoWhereInput = {
         activo: true,
@@ -25,6 +41,10 @@ export const getProductsAll = async ({ query }: Props) => {
     }
     try {
         const products = await prisma.producto.findMany({
+
+            skip: (page - 1) * take,
+            take: take,
+
             select: {
                 id: true,
                 nombre: true,
@@ -66,6 +86,9 @@ export const getProductsAll = async ({ query }: Props) => {
             }
         })
 
+        const totalCount = await prisma.producto.count({ where });
+        const totalPages = Math.ceil(totalCount / take);
+
 
         return {
             ok: true,
@@ -103,9 +126,14 @@ export const getProductsAll = async ({ query }: Props) => {
                     isFavorite
                 }
             }),
+            pagination: {
+                currentPage: page,
+                totalPages,
+                totalCount,
+            }
         }
 
-        
+
 
     } catch (error) {
         console.error('❌ getProductsAll error:', error)

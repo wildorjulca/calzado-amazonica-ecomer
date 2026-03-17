@@ -21,7 +21,6 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
     const { ok, product, message, } = await getProductBySlug({ slug: slug })
 
 
-    console.log('product:', product)
 
     if (!ok) {
         return (
@@ -41,7 +40,7 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
 
     // const colorIdImg: number | undefined = product?.coloresDisponibles[0].id || 
 
-    const { imagenes, } = await getImagesProductByColor({ productId: product.id || 0, colorId: Number(colorId) })
+    const { imagenes } = await getImagesProductByColor({ productId: product.id || 0, colorId: Number(colorId) })
 
 
     return (

@@ -1,15 +1,11 @@
-import { GoogleIcon } from '@/src/components/icons/GoogleIcon'
-import { GoalIcon } from 'lucide-react'
-import React from 'react'
 import LoginForm from './ui/login-form'
 import Link from 'next/link'
 
 const page = () => {
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-neutral-100 px-4">
+    <div className="w-full flex items-center justify-center">
       <div className="w-full max-w-md rounded-md bg-white px-8 py-16 shadow-sm">
-
         {/* Título */}
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold text-neutral-900">

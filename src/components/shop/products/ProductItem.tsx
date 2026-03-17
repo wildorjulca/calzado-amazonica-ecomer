@@ -28,6 +28,7 @@ const ProductItem = ({ product }: Props) => {
                 setImages(queryProductImagesByColor?.data.product_imagenes || undefined)
                 // setImages(queryProductImagesByColor.data.product_imagenes || [])
             }
+        }else{
         }
     }, [queryProductImagesByColor.data, selectColorId])
 

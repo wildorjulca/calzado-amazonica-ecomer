@@ -15,11 +15,11 @@ type Props = {
 }
 
 const links = [
-	{ label: "Perfil", href: "my-account/perfil" },
-	{ label: "Experiencias", href: "/experiencias" },
-	{ label: "Mis órdenes", href: "my-account/orders" },
-	{ label: "Favoritos", href: "/favoritos" },
-	{ label: "Configuración de la cuenta", href: "my-account/configuracion" },
+	{ label: "Perfil", href: "/my-account" },
+	{ label: "Mis órdenes", href: "/my-account/orders" },
+	{ label: "Favoritos", href: "/my-account/favoritos" },
+	{ label: "Experiencias", href: "/my-account/experiencias" },
+	{ label: "Configuración de la cuenta", href: "/my-account/configuracion" },
 ]
 
 export function UserMenu({ user }: Props) {

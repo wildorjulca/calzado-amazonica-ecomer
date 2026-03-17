@@ -7,6 +7,9 @@ import { revalidatePath } from "next/cache"
 
 
 interface Props {
+    page?: number;
+    take?: number;
+
     categorySlug: string,
     subcategory?: string,
     marca?: string;
@@ -20,7 +23,11 @@ interface Props {
     maxPrice?: number
 }
 
-export const getProductsByCategory = async ({ categorySlug, subcategory, marca, orderBy }: Props) => {
+export const getProductsByCategory = async ({ page = 1, take = 6, categorySlug, subcategory, marca, orderBy }: Props) => {
+
+    if (isNaN(Number(page))) page = 1;
+    if (page < 1) page = 1
+
 
     try {
         const where: Prisma.productoWhereInput = {
@@ -68,6 +75,8 @@ export const getProductsByCategory = async ({ categorySlug, subcategory, marca, 
         }
 
         const products = await prisma.producto.findMany({
+            skip: (page - 1) * take,
+            take: take,
             select: {
                 id: true,
                 nombre: true,
@@ -97,8 +106,11 @@ export const getProductsByCategory = async ({ categorySlug, subcategory, marca, 
                 }
             },
             where: where,
-            orderBy: orderByClause
+            orderBy: orderByClause,
         })
+
+        const totalCount = await prisma.producto.count({ where });
+        const totalPages = Math.ceil(totalCount / take);
 
 
 
@@ -135,7 +147,12 @@ export const getProductsByCategory = async ({ categorySlug, subcategory, marca, 
                     producto_imagen: imagenes,   // 👈 SOLO imágenes del color default
                 }
 
-            })
+            }),
+             pagination: {
+                currentPage: page,
+                totalPages,
+                totalCount,
+            }
         }
     } catch (error) {
         console.error('❌ getProductsCategory error:', error)

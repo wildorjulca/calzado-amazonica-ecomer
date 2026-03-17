@@ -1,11 +1,27 @@
 import { getProductsAll } from '@/src/actions/shop'
+import Pagination from '@/src/components/shop/pagination/Pagination'
 import ProductGrid from '@/src/components/shop/products/ProductGrid'
 
-const page = async () => {
+interface Props {
+  searchParams: {
+    page?: string,
+    // marca?: string,
+    // talla?: string | string[],
+    // color?: string | string[],
+    // orden?: "precio-asc" | "precio-desc" | "nuevos" | "mejores" | "recomendados";
+  },
 
-  const result = await getProductsAll({})
+}
+const page = async ({ searchParams }: Props) => {
 
-  const { ok, products, message } = result
+  const { page } = await searchParams
+
+  const result = await getProductsAll({  page: Number(page)})
+
+
+
+  const { ok, products, message, pagination } = result
+
 
   if (!ok) {
     return (
@@ -16,8 +32,17 @@ const page = async () => {
     )
   }
   return (
-    // <div className='mx-auto max-w-7xl  mt-5 mb-10'>
+    <>
       <ProductGrid products={products} />
+      <Pagination
+        pagination={{
+          currentPage: pagination?.currentPage ?? 0,
+          totalPages: pagination?.totalPages ?? 0,
+        }}
+      />
+    </>
+    // <div className='mx-auto max-w-7xl  mt-5 mb-10'>
+
     // </div>
   )
 }

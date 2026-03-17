@@ -28,7 +28,7 @@ const CategoryLayout = async ({ children, params }: Props) => {
               marcas={marcas}
               tallas={tallas}
             /> */}
-        <div className="mb-16">
+        <div className="w-full">
           {children}
         </div>
       </div>

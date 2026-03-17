@@ -13,7 +13,7 @@ const layoutAuth = async ({ children }: Props) => {
         redirect("/")
     }
     return (
-        <div>
+        <div className=''>
             {children}
         </div>
     )

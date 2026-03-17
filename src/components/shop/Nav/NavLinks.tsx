@@ -64,7 +64,7 @@ export const NavLinks = ({ channel }: { channel: string }) => {
 				);
 			})}
 
-			<NavLink href="/categories">Ver más</NavLink>
+			{/* <NavLink href="/categories">Ver más</NavLink> */}
 		</div>
 	);
 };

@@ -8,9 +8,9 @@ import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigat
 
 const links = [
     { label: "Perfil", href: "/my-account/perfil", icon: User },
-    { label: "Experiencias", href: "/experiencias", icon: Briefcase },
     { label: "Mis órdenes", href: "/my-account/orders", icon: ShoppingBag },
-    { label: "Favoritos", href: "/favoritos", icon: Heart },
+    { label: "Favoritos", href: "/my-account/favoritos", icon: Heart },
+    { label: "Experiencias", href: "/my-account/experiencias", icon: Briefcase },
     { label: "Configuración de la cuenta", href: "/my-account/configuracion", icon: Settings },
 ];
 

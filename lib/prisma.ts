@@ -11,12 +11,21 @@ import { PrismaClient } from "@/generated/prisma/client";
 //   database: process.env.DATABASE_NAME,
 //   connectionLimit: 5
 // });
+// const adapter = new PrismaMariaDb({
+//   host: "localhost",
+//   user: "root",
+//   password: "wildor",
+//   database: "zapatillas_online",
+//   connectionLimit: 5
+// });
+
 const adapter = new PrismaMariaDb({
-  host: "localhost",
+  host: "turntable.proxy.rlwy.net",
   user: "root",
-  password: "wildor",
-  database: "zapatillas_online",
-  connectionLimit: 5
+  password: "IkQimaZeBkXohqwwXkNoKRsQzFOyIFLG",
+  database: "zapatillas_db",
+  connectionLimit: 5,
+  port: 31385
 });
 const prisma = new PrismaClient({ adapter });
 

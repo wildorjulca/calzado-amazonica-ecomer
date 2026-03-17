@@ -1,5 +1,6 @@
 import { getProductsByCategory } from '@/src/actions/shop/products/getProductsByCategory'
 import ProductSortSelect from '@/src/components/shop/category/ProductSortSelect'
+import Pagination from '@/src/components/shop/pagination/Pagination'
 import EmptyProducts from '@/src/components/shop/products/EmptyProducts'
 import ProductGrid from '@/src/components/shop/products/ProductGrid'
 
@@ -8,6 +9,7 @@ interface Props {
     category: string
   },
   searchParams: {
+    page?: string;
     subCategory?: string;
     marca?: string;
     orderBy?: string;
@@ -20,17 +22,18 @@ interface Props {
 const Categorypage = async ({ params, searchParams }: Props) => {
 
   const { category } = await params
-  const { subCategory, marca, orderBy } = await searchParams
+  const { page, subCategory, marca, orderBy } = await searchParams
 
 
   const result = await getProductsByCategory({
+    page: Number(page),
     categorySlug: category,
     subcategory: subCategory,
     marca: marca,
     orderBy: orderBy
   })
 
-  const { ok, products, message } = result
+  const { ok, products, message, pagination } = result
 
   if (!ok) {
     return (
@@ -42,12 +45,12 @@ const Categorypage = async ({ params, searchParams }: Props) => {
   }
 
   return (
-    <div className='mx-auto max-w-7xl'>
+    <div className='w-full'>
       {products.length === 0 ? (
         <EmptyProducts />
       ) : (
         <div>
-          <div className="mb-8">
+          <div className="mb-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
               {/* Izquierda - Resultados */}
@@ -78,6 +81,13 @@ const Categorypage = async ({ params, searchParams }: Props) => {
             </div>
           </div>
           <ProductGrid products={products || []} />
+
+          <Pagination
+            pagination={{
+              currentPage: pagination?.currentPage ?? 0,
+              totalPages: pagination?.totalPages ?? 0
+            }}
+          />
         </div>
       )}
 

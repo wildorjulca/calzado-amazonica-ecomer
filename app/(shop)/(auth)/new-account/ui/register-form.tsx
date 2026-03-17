@@ -49,7 +49,7 @@ const RegiterForm = () => {
 
     return (
         <form
-            className='space-y-4'
+            className='space-y-4 w-full'
             onSubmit={handleSubmit(onSubmit)}
         >
             <div>

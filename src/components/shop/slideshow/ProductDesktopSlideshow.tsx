@@ -14,6 +14,8 @@ import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 
 import './slideshow.css';
+import ImageSkeleton from '../skeleton/ImageSkeleton';
+import ContentLoader from 'react-content-loader';
 // import { ProductImage } from '../product-image/ProductImage';
 
 
@@ -30,10 +32,19 @@ export const ProductDesktopSlideshow = ({ images, title, className }: Props) => 
 
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperObject>();
 
+    // Skeleton mientras no hay imágenes
+    if (!images || images.length === 0) {
+        return (
+            <div className="w-full h-[500px] md:h-[800px] bg-gray-100 rounded-lg relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 animate-pulse"></div>
+            </div>
+        );
+    }
+
+
 
     return (
         <div className={className}>
-
             <Swiper
 
                 style={{
@@ -60,7 +71,7 @@ export const ProductDesktopSlideshow = ({ images, title, className }: Props) => 
                                 height={800}
                                 src={`/images/products/${image}`}
                                 alt={title}
-                                // className="rounded-lg object-contain"
+                            // className="rounded-lg object-contain"
                             />
                         </SwiperSlide>
 
@@ -92,8 +103,6 @@ export const ProductDesktopSlideshow = ({ images, title, className }: Props) => 
                     ))
                 }
             </Swiper>
-
-
         </div>
     );
 };

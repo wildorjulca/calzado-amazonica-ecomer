@@ -1,12 +1,11 @@
 
-import React from 'react'
 import Link from 'next/link'
 import RegiterForm from './ui/register-form'
 
 const NewAccountPage = () => {
     return (
-        <div className="min-h-screen flex items-center justify-center bg-neutral-100 py-4">
-            <div className="w-full max-w-md rounded-md bg-white px-8 py-16 shadow-sm">
+        <div className="min-h-screen flex items-center justify-center py-4">
+            <div className="w-full max-w-md rounded-md border-gray-100 bg-white px-8 py-16 shadow-sm">
 
                 {/* Título */}
                 <div className="mb-6 text-center">

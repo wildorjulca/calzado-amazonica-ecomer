@@ -1,9 +1,5 @@
 
 import { Suspense } from "react";
-// import { UserMenuContainer } from "./components/UserMenu/UserMenuContainer";
-// import { CartNavItem } from "./components/CartNavItem";
-// import { NavLinks } from "./components/NavLinks";
-// import { MobileMenu } from "./components/MobileMenu";
 import { SearchBar } from "../SearchBar";
 import { NavLinks } from "./NavLinks";
 import { CartNavItem } from "../CartNavItem";

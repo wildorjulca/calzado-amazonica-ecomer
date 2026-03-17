@@ -121,7 +121,7 @@ const SubCategoryDropdown = ({ subcategory }: Props) => {
                 className={`cursor-pointer flex items-center justify-between py-3 pl-6 pr-5 ${toggleDropdown && "shadow-sm"
                     }`}
             >
-                <p className="text-gray-900">SubCategoria</p>
+                <p className="text-gray-900">Tipo</p>
                 <button
                     aria-label="button for category dropdown"
                     className={`text-gray-900 transition duration-200 ${toggleDropdown && "rotate-180"

@@ -1,7 +1,7 @@
 
 const EmptyProducts = () => {
     return (
-        <div className="flex min-h-[60vh] flex-col items-center justify-center text-center">
+        <div className="flex w-full  flex-col items-center justify-center text-center">
             <span className="text-5xl">😕</span>
 
             <h2 className="mt-4 text-xl font-semibold tracking-tight">
