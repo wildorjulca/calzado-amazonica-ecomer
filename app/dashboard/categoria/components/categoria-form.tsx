@@ -8,6 +8,9 @@ type Props = {
 }
 const CategoriaForm = ({ categoria, onSuccess }: Props) => {
     return (
+        <div>
+            categoria form
+        </div>
     //     <Form {...form}>
     //   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
     //     <FormField
