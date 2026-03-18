@@ -52,8 +52,11 @@ export const metadata: Metadata = {
     description: "Compra los mejores zapatos en línea",
     images: ["/og-image.png"],
   },
+  verification: {
+    google: "11diTBZ21KUh3VX80X2YflTHrYn0QrLkGT6csg8roC4",
+  },
 };
-
+{/* <meta name="google-site-verification" content="11diTBZ21KUh3VX80X2YflTHrYn0QrLkGT6csg8roC4" /> */}
 export default function RootLayout({
   children,
 }: Readonly<{
