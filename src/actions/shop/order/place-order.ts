@@ -11,7 +11,7 @@ type ProductMap = {
     precio_final: number
 }
 
-type AddressUser = {
+export type AddressUser = {
     nombres: string
     apellidos: string
     telefono: string
