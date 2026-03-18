@@ -5,10 +5,10 @@ import EmptyProducts from '@/src/components/shop/products/EmptyProducts'
 import ProductGrid from '@/src/components/shop/products/ProductGrid'
 
 interface Props {
-  params: {
+  params: Promise<{
     category: string
-  },
-  searchParams: {
+  }>,
+  searchParams:Promise< {
     page?: string;
     subCategory?: string;
     marca?: string;
@@ -16,7 +16,7 @@ interface Props {
     minPrice?: number,
     maxPrice?: number
 
-  }
+  }>
 }
 
 const Categorypage = async ({ params, searchParams }: Props) => {

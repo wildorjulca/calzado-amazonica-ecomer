@@ -1,12 +1,11 @@
 import { getProductsAll } from '@/src/actions/shop'
 import ProductGrid from '@/src/components/shop/products/ProductGrid'
 import { notFound } from 'next/navigation'
-import React from 'react'
 
 interface Props {
-    searchParams: {
+    searchParams: Promise<{
         query: string
-    }
+    }>
 }
 const SearchPage = async ({ searchParams }: Props) => {
     const { query } = await searchParams

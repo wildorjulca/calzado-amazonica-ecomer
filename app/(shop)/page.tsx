@@ -3,20 +3,20 @@ import Pagination from '@/src/components/shop/pagination/Pagination'
 import ProductGrid from '@/src/components/shop/products/ProductGrid'
 
 interface Props {
-  searchParams: {
+  searchParams: Promise<{
     page?: string,
     // marca?: string,
     // talla?: string | string[],
     // color?: string | string[],
     // orden?: "precio-asc" | "precio-desc" | "nuevos" | "mejores" | "recomendados";
-  },
+  }>,
 
 }
 const page = async ({ searchParams }: Props) => {
 
   const { page } = await searchParams
 
-  const result = await getProductsAll({  page: Number(page)})
+  const result = await getProductsAll({ page: Number(page) })
 
 
 

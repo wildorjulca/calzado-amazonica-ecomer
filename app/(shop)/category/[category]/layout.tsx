@@ -4,9 +4,9 @@ import React from 'react'
 
 interface Props {
   children: React.ReactNode,
-  params: {
+  params: Promise<{
     category: string
-  }
+  }>
 }
 
 const CategoryLayout = async ({ children, params }: Props) => {

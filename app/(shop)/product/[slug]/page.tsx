@@ -3,15 +3,14 @@ import { getImagesProductByColor, getProductBySlug } from "@/src/actions/shop/pr
 import ProductVariants from "@/src/components/shop/product/product-variants"
 import { ProductDesktopSlideshow } from "@/src/components/shop/slideshow/ProductDesktopSlideshow"
 import { ProductMobileSlideshow } from "@/src/components/shop/slideshow/ProductMobileSlideshow"
-import Image from "next/image"
 
 interface Props {
-    params: {
+    params: Promise<{
         slug: string
-    },
-    searchParams: {
+    }>,
+    searchParams: Promise<{
         colorId: string,
-    }
+    }>
 }
 const ProductSlugPage = async ({ params, searchParams }: Props) => {
     const { slug } = await params
