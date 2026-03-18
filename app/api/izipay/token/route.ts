@@ -1,9 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
   req: NextRequest,
-  res: NextApiResponse
+  res: NextResponse
 ) {
   // const { transactionId, orderNumber, amount } = await req.json()
   const { amount, currency, transactionId, customerEmail, orderId } = await req.json()
