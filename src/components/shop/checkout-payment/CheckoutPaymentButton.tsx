@@ -78,33 +78,33 @@ interface CulqiInstance {
     close: () => void
 }
 
-interface CulqiConfig {
-    settings: {
-        title: string
-        currency: 'PEN' | 'USD'
-        amount: number
-        order: string
-        xculqirsaid: string
-        rsapublickey: string
-    }
-    client: { email: string }
-    options: {
-        lang: 'es' | 'en'
-        modal: boolean
-        installments: boolean
-        paymentMethods: {
-            tarjeta?: boolean
-            yape?: boolean
-            billetera?: boolean
-            bancaMovil?: boolean
-        }
-        paymentMethodsSort: string[]
-    }
-    appearance?: {
-        menuType?: 'default' | 'sidebar' | 'sliderTop' | 'select'
-        logo?: string
-    }
-}
+// interface CulqiConfig {
+//     settings: {
+//         title: string
+//         currency: 'PEN' | 'USD'
+//         amount: number
+//         order: string
+//         xculqirsaid: string
+//         rsapublickey: string
+//     }
+//     client: { email: string }
+//     options: {
+//         lang: 'es' | 'en'
+//         modal: boolean
+//         installments: boolean
+//         paymentMethods: {
+//             tarjeta?: boolean
+//             yape?: boolean
+//             billetera?: boolean
+//             bancaMovil?: boolean
+//         }
+//         paymentMethodsSort: string[]
+//     }
+//     appearance: {
+//         menuType?: 'default' | 'sidebar' | 'sliderTop' | 'select'
+//         logo?: string
+//     }
+// }
 
 const CheckoutPaymentButton = () => {
     const router = useRouter()
