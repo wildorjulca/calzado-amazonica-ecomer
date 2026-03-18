@@ -16,7 +16,7 @@ import {
 import { MoreHorizontal } from "lucide-react"
 
 export type Order = {
-    // id: number;
+    id: number;
     codigo_pedido: string;
     cliente: string,
     fecha_pedido: Date,
