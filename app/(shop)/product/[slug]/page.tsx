@@ -17,19 +17,19 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
     const { colorId } = await searchParams
 
 
-    const { ok, product, message, } = await getProductBySlug({ slug: slug })
+    const res = await getProductBySlug({ slug: slug })
 
 
 
-    if (!ok) {
+    if (!res.ok) {
         return (
             <div className="flex justify-center items-center">
-                <p className="text-red-500">{message}</p>
+                <p className="text-red-500">{res.message}</p>
             </div>
         )
     }
 
-    if (!product) {
+    if (!res.product) {
         return (
             <div>
                 <p>Product not found</p>
@@ -37,6 +37,8 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
         )
     }
 
+
+    const { product } = res
     // const colorIdImg: number | undefined = product?.coloresDisponibles[0].id || 
 
     const { imagenes } = await getImagesProductByColor({ productId: product.id || 0, colorId: Number(colorId) })
@@ -66,7 +68,7 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
 
                 <p className="text-lg mb-5">${product.precio_base_venta}</p>
                 <ProductVariants
-                    productSlug={product || {}}
+                    productSlug={product}
                     imagenes={imagenes}
                     productId={product.id || 0}
                     colores={product.coloresDisponibles || []}

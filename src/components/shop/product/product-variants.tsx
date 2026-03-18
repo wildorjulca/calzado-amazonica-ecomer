@@ -8,15 +8,12 @@ import clsx from 'clsx'
 import { useRouter, useSearchParams } from "next/navigation";
 import AddToCart from "./addTo-cart";
 import { inter, titleFont } from "@/config/fonts";
-import { Search } from "lucide-react";
-import { useVerificarStock } from "@/src/hooks/queries/product/useVerificarStock";
 import { VerificarStock } from "@/src/actions/shop/product/verificaStock";
-import { set } from "zod";
 import { CartProduct, useCartStore } from "@/src/store";
 import { ProductSlug } from "@/src/interface/productBySlug";
 
 interface Props {
-    productSlug: ProductSlug
+    productSlug: ProductSlug 
     imagenes: string[];
     productId: number;
     colores: Color[]
@@ -132,9 +129,6 @@ const ProductVariants = ({ productSlug, imagenes, colores, productId }: Props) =
             setloadingStock(false)
         }
     }
-
-    // console.log("selectedTalla:", selectTalla)
-    console.log("cart:", cart)
 
 
     const onValueQuantityChanged = (value: number) => {

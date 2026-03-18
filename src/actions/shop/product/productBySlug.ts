@@ -2,12 +2,17 @@
 'use server'
 
 import { prisma } from "@/lib"
+import { ProductSlug } from "@/src/interface/productBySlug";
 
 interface Props {
     slug: string
 }
 
-export const getProductBySlug = async ({ slug }: Props) => {
+type GetProductBySlugResponse =
+    | { ok: true; product: ProductSlug }
+    | { ok: false; message: string }
+
+export const getProductBySlug = async ({ slug }: Props): Promise<GetProductBySlugResponse> => {
 
     try {
         const product = await prisma.producto.findFirst({
@@ -55,22 +60,37 @@ export const getProductBySlug = async ({ slug }: Props) => {
             }
         })
 
+        if (!product) {
+            return { ok: false, message: "No product" }
+        }
 
-        const coloresDisponibles = Array.from(new Map(
-            product?.variante_producto.map(v => [v.color.id, v.color])
-        ).values())
+
+        // const coloresDisponibles = Array.from(new Map(
+        //     product?.variante_producto.map(v => [v.color.id, v.color])
+        // ).values())
+        const coloresDisponibles = Array.from(
+            new Map(
+                product.variante_producto.map(v => [
+                    v.color.id,
+                    {
+                        ...v.color,
+                        codigo_hex: v.color.codigo_hex ?? "" // 👈 FIX AQUÍ
+                    }
+                ])
+            ).values()
+        )
 
         return {
             ok: true,
             product: {
-                id: product?.id,
-                nombre: product?.nombre,
-                slug: product?.slug,
-                descripcion: product?.descripcion,
-                precio_base_venta: Number(product?.precio_base_venta),
-                precio_descuento: Number(product?.precio_descuento),
-                porcentaje_descuento: Number(product?.porcentaje_descuento),
-                en_oferta: product?.en_oferta,
+                id: product.id,
+                nombre: product.nombre,
+                slug: product.slug,
+                descripcion: product.descripcion ?? "",
+                precio_base_venta: Number(product.precio_base_venta),
+                precio_descuento: Number(product.precio_descuento),
+                porcentaje_descuento: Number(product.porcentaje_descuento),
+                en_oferta: product.en_oferta ?? false,
                 coloresDisponibles: coloresDisponibles
             },
 
@@ -80,7 +100,6 @@ export const getProductBySlug = async ({ slug }: Props) => {
         console.log("Error: ", error)
         return {
             ok: false,
-            product: {},
             message: "Error enel fech de product slug"
         }
 
