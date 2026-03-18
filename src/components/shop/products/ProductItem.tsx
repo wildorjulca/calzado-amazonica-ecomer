@@ -7,8 +7,6 @@ import ProductColorItem from './ProductColorItem'
 import { useEffect, useState } from 'react'
 import { useProductImagesByColor } from '@/src/hooks/queries/product/useProductImagesByColor'
 import ImageSkeleton from '../skeleton/ImageSkeleton'
-import { Button } from '@/components/ui/button'
-import { Heart } from 'lucide-react'
 import AddTofavorites from '../product/addTo-favorites'
 
 interface Props {
@@ -45,7 +43,7 @@ const ProductItem = ({ product }: Props) => {
                     <ImageSkeleton />
                 ) : (
                     <ImageCarousel
-                        images={images}
+                        images={images || []}
                     />
                 )}
 
