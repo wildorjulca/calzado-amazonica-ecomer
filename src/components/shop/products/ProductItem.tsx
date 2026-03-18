@@ -26,7 +26,7 @@ const ProductItem = ({ product }: Props) => {
                 setImages(queryProductImagesByColor?.data.product_imagenes || undefined)
                 // setImages(queryProductImagesByColor.data.product_imagenes || [])
             }
-        }else{
+        } else {
         }
     }, [queryProductImagesByColor.data, selectColorId])
 
@@ -43,6 +43,7 @@ const ProductItem = ({ product }: Props) => {
                     <ImageSkeleton />
                 ) : (
                     <ImageCarousel
+                        key={product.id}
                         images={images || []}
                     />
                 )}

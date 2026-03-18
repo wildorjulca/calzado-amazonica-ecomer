@@ -64,7 +64,6 @@ export const getProductBySlug = async ({ slug }: Props): Promise<GetProductBySlu
             return { ok: false, message: "No product" }
         }
 
-
         // const coloresDisponibles = Array.from(new Map(
         //     product?.variante_producto.map(v => [v.color.id, v.color])
         // ).values())

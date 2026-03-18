@@ -3,6 +3,7 @@ import { getImagesProductByColor, getProductBySlug } from "@/src/actions/shop/pr
 import ProductVariants from "@/src/components/shop/product/product-variants"
 import { ProductDesktopSlideshow } from "@/src/components/shop/slideshow/ProductDesktopSlideshow"
 import { ProductMobileSlideshow } from "@/src/components/shop/slideshow/ProductMobileSlideshow"
+import { Metadata, ResolvingMetadata } from "next"
 
 interface Props {
     params: Promise<{
@@ -12,6 +13,92 @@ interface Props {
         colorId: string,
     }>
 }
+
+
+
+// Generar metadada del detalle del producto 
+export async function generateMetadata(
+    { params, searchParams }: Props,
+): Promise<Metadata> {
+
+    const { slug } = await params
+    const { colorId } = await searchParams
+
+    const res = await getProductBySlug({ slug })
+
+    if (!res.ok) {
+        return {
+            title: "Producto no encontrado",
+        }
+    }
+
+    const { product } = res
+
+    let imageUrl: string | null = null
+
+    // ✅ 1. Intentar con colorId de la URL
+    if (colorId) {
+        const { imagenes } = await getImagesProductByColor({
+            productId: product.id,
+            colorId: Number(colorId)
+        })
+
+        if (imagenes.length > 0) {
+            imageUrl = imagenes[0]
+        }
+    }
+
+    // ✅ 2. FALLBACK: primer color disponible
+    if (!imageUrl && product.coloresDisponibles.length > 0) {
+        const firstColorId = product.coloresDisponibles[0].id
+
+        const { imagenes } = await getImagesProductByColor({
+            productId: product.id,
+            colorId: firstColorId
+        })
+
+        if (imagenes.length > 0) {
+            imageUrl = imagenes[0]
+        }
+    }
+
+    // ✅ 3. FALLBACK FINAL
+    if (!imageUrl) {
+        imageUrl = "images/products/no-image.png"
+    }
+
+    // ✅ URL absoluta
+    const fullImageUrl = imageUrl.startsWith("http")
+        ? imageUrl
+        : `${process.env.NEXT_PUBLIC_SITE_URL}/images/products/${imageUrl}`
+
+        console.log({fullImageUrl})
+    return {
+        title: product.nombre,
+        description: product.descripcion,
+
+        openGraph: {
+            title: product.nombre,
+            description: product.descripcion,
+            url: `${process.env.NEXT_PUBLIC_SITE_URL}/product/${product.slug}`,
+            images: [
+                {
+                    url: fullImageUrl,
+                    width: 1200,
+                    height: 630,
+                    alt: product.nombre,
+                }
+            ],
+        },
+
+        twitter: {
+            card: "summary_large_image",
+            images: [fullImageUrl],
+        },
+    }
+}
+
+
 const ProductSlugPage = async ({ params, searchParams }: Props) => {
     const { slug } = await params
     const { colorId } = await searchParams
@@ -36,6 +123,8 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
             </div>
         )
     }
+
+
 
 
     const { product } = res
