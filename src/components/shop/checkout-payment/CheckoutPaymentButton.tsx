@@ -14,11 +14,61 @@ import Lottie from 'lottie-react'
 import { useRouter } from "next/navigation"
 
 /* ===================================================== */
+
+interface CulqiInstance {
+    token?: { id: string }
+    error?: { user_message?: string }
+    culqi: () => void
+    open: () => void
+    close: () => void
+}
+interface CulqiConfig {
+    settings: {
+        title: string
+        currency: 'PEN' | 'USD'
+        amount: number // EN CÉNTIMOS → 7990 = S/ 79.90
+        order: string
+        xculqirsaid: string
+        rsapublickey: string
+    }
+    client: {
+        email: string
+    }
+    options: {
+        lang: 'es' | 'en'
+        modal: boolean
+        installments: boolean
+        paymentMethods: {
+            tarjeta?: boolean
+            yape?: boolean
+            billetera?: boolean
+            bancaMovil?: boolean
+        }
+        paymentMethodsSort: string[]
+    }
+    appearance?: {
+        menuType?: 'default' | 'sidebar' | 'sliderTop' | 'select',
+        buttonCardPayText?: string
+        logo?: string
+        defaultStyle?: {
+            bannerColor?: string
+            buttonBackground?: string
+            menuColor?: string
+        }
+    }
+}
+
 declare global {
+    // interface Window {
+    //     CulqiCheckout: new (publicKey: string, config: CulqiConfig) => CulqiInstance
+    // }
     interface Window {
         CulqiCheckout: new (publicKey: string, config: CulqiConfig) => CulqiInstance
     }
+
 }
+
+
 
 interface CulqiInstance {
     token?: { id: string }

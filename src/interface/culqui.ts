@@ -1,5 +1,6 @@
 // Tipos base para Culqi Checkout (Next.js + TypeScript)
 
+
 /* ===============================
    SETTINGS
 ================================ */

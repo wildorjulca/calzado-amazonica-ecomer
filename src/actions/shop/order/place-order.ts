@@ -30,7 +30,7 @@ type ProductId = {
 // !!  falta el addressUser  como argumento 👇
 export const placeToOrder = async (addressUser: AddressUser, productId: ProductId[]) => {
 
-    await sleep(2)
+    await sleep(1)
 
     // 01 verificar si el usaurio esta autenticado 
     const session = await auth()
