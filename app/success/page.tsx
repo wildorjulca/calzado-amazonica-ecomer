@@ -26,9 +26,17 @@ const SuccessPage = async ({ searchParams }: Props) => {
     )
   }
 
+  if(!response.pedido){
+    return (
+      <div>
+        No se econtro el pedido 😔
+      </div>
+    )
+  }
+
   return (
     <div>
-      <SuccessPayment pedido={response?.pedido} />
+      <SuccessPayment pedido={response?.pedido??[]} />
     </div>
   )
 }

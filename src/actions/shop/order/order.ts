@@ -20,7 +20,7 @@ export const getOrderById = async (orderId: number) => {
                                     }
                                 }
                             }
-                        }
+                        },
                     }
                 }
             }
@@ -38,6 +38,7 @@ export const getOrderById = async (orderId: number) => {
             codido_pedido: order.codigo_pedido,
             estado_pedido: order.estado,
             estado_pago: order.estado_pago,
+            metodo_pago: order.metodo_pago,
             total: Number(order.total),
             items: order.detalle_pedido.map((item => {
 
@@ -46,7 +47,7 @@ export const getOrderById = async (orderId: number) => {
                 return {
                     id: item.id,
                     nombre: producto.nombre,
-                    descripcion: producto.descripcion,
+                    descripcion: producto.descripcion ?? "",
                     subtotal: Number(item.subtotal),
                     cantidad: item.cantidad,
                     color: variante_producto.color.nombre,
