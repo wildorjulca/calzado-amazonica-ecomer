@@ -1,5 +1,6 @@
 'use server'
 
+import { auth } from "@/auth"
 import { Prisma } from "@/generated/prisma/browser"
 import { prisma } from "@/lib"
 import { sleep } from "@/lib/sleep"
@@ -27,6 +28,11 @@ export const getProductsByCategory = async ({ page = 1, take = 6, categorySlug, 
 
     if (isNaN(Number(page))) page = 1;
     if (page < 1) page = 1
+
+
+    const session = await auth()
+    const userId = Number(session?.user?.id)
+
 
 
     try {
@@ -103,7 +109,13 @@ export const getProductsByCategory = async ({ page = 1, take = 6, categorySlug, 
                             }
                         }
                     }
-                }
+                },
+                wishlist: userId ?
+                    {
+                        where:
+                            { usuario_id: userId },
+                        select: { id: true }
+                    } : false
             },
             where: where,
             orderBy: orderByClause,
@@ -136,6 +148,8 @@ export const getProductsByCategory = async ({ page = 1, take = 6, categorySlug, 
                     .filter((img) => img.color_id == colorDefault.id)
                     .map((img) => img.url_imagen)
 
+                const isFavorite = userId ? p.wishlist.length > 0 : false
+
                 return {
                     ...p,
                     precio_base_venta: Number(p.precio_base_venta),
@@ -145,10 +159,11 @@ export const getProductsByCategory = async ({ page = 1, take = 6, categorySlug, 
 
                     color_default: colorDefault, // 👈 importante
                     producto_imagen: imagenes,   // 👈 SOLO imágenes del color default
+                    isFavorite
                 }
 
             }),
-             pagination: {
+            pagination: {
                 currentPage: page,
                 totalPages,
                 totalCount,
