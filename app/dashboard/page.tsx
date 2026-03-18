@@ -71,12 +71,13 @@ const DashboardPage = async () => {
             {response.pedidos?.length === 0 ? (
               <IsEmpty />
             ) : (
-              <Datatable
-                data={response.pedidos || []}
-                columns={columns}
-                globalFilterColumn="name"
-                caption="List of users."
-              />
+              // <Datatable
+              //   data={response.pedidos || []}
+              //   columns={columns}
+              //   globalFilterColumn="name"
+              //   caption="List of users."
+              // />
+              <p>Datos del ordenes falta ponerlo</p>
             )}
 
           </Card>

@@ -15,14 +15,23 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { MoreHorizontal } from "lucide-react"
 
+// export type Order = {
+//     id: number;
+//     codigo_pedido: string;
+//     cliente: string,
+//     fecha_pedido: Date,
+//     total: number;
+//     estado_pedido: pedido_estado,
+//     estado_pago: pedido_metodo_pago,
+// }
 export type Order = {
     id: number;
     codigo_pedido: string;
-    cliente: string,
-    fecha_pedido: Date,
+    cliente: string;
+    fecha_pedido: Date | null; // permite null
     total: number;
-    estado_pedido: pedido_estado,
-    estado_pago: pedido_metodo_pago,
+    estado_pedido: pedido_estado | null; // permite null
+    estado_pago: pedido_metodo_pago | null; // permite null
 }
 
 export const columns: ColumnDef<Order>[] = [
@@ -61,6 +70,7 @@ export const columns: ColumnDef<Order>[] = [
     {
         accessorKey: "cliente",
         header: "Cliente",
+   
     },
     {
         accessorKey: "fecha_pedido",
