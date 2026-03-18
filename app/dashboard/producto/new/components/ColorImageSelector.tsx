@@ -66,7 +66,7 @@ const ColorImageSelector = ({
                                             <div className="flex items-center gap-3">
                                                 <div
                                                     className="w-9 h-9 rounded-full border shadow-sm"
-                                                    style={{ background: c.codigo_hex }}
+                                                    style={{ background: `${c.codigo_hex}` }}
                                                 />
                                                 <div>
                                                     <p className="font-medium text-gray-800">
