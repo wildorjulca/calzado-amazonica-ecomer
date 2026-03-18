@@ -22,7 +22,7 @@ const page = async () => {
     <div>
       <h1 className='text-2xl'>Productos</h1>
       <div className='mt-8'>
-        <DataTable columns={columns} data={data} />
+        {/* <DataTable columns={columns} data={data} /> */}
 
       </div>
     </div>
