@@ -7,7 +7,7 @@ import clsx from 'clsx'
 import Loader from '../../Loader'
 import { CheckoutFormInputs } from '@/app/checkout-payment/page'
 import { useCartStore } from '@/src/store'
-import { placeToOrder } from '@/src/actions/shop/order/place-order'
+import { AddressUser, placeToOrder } from '@/src/actions/shop/order/place-order'
 import { CreditCard } from 'lucide-react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../../ui/dialog'
 import Lottie from 'lottie-react'
@@ -266,7 +266,13 @@ const CheckoutPaymentButton = () => {
             }))
 
             const { region_id, provincia_id, ...rest } = data
-            const res = await placeToOrder(rest, productId)
+
+            const addressUser: AddressUser = {
+                ...rest,
+                distrito_id: Number(rest.distrito_id),
+
+            }
+            const res = await placeToOrder(addressUser, productId)
 
             if (!res.ok) {
                 setMessageError(res.message)
