@@ -31,7 +31,7 @@ export const ProductMobileSlideshow = ({ images, title, className }: Props) => {
       <Swiper
         style={{
           // width: '100vw',
-          height: '500px'
+          height: '400px'
         }}
         pagination
         autoplay={{
@@ -43,14 +43,26 @@ export const ProductMobileSlideshow = ({ images, title, className }: Props) => {
 
         {
           images.map(image => (
+            // <SwiperSlide key={image}>
+            //   <Image
+            //     // width={600}
+            //     // height={500}
+            //     src={`/images/products/${image}`}
+            //     alt={title}
+            //     fill
+            //     // className="object-fill"
+            //     className="object-contain"
+            //   />
+            // </SwiperSlide>
             <SwiperSlide key={image}>
-              <Image
-                width={600}
-                height={500}
-                src={`/images/products/${image}`}
-                alt={title}
-                className="object-fill"
-              />
+              <div className="relative w-full h-[400px]">
+                <Image
+                  src={`/images/products/${image}`}
+                  alt={title}
+                  fill
+                  className="object-contain"
+                />
+              </div>
             </SwiperSlide>
 
           ))

@@ -180,7 +180,7 @@ const ProductVariants = ({ productSlug, imagenes, colores, productId }: Props) =
             {errorMessage && (
                 <p className={`${inter.className} antialiased text-red-600 mb-4 text-md`}>{errorMessage}</p>
             )}
-            <div className="my-4">
+            <div className="my-4 w-full">
                 <AddToCart
                     loadingStock={loadingStock}
                     quantity={quantity}

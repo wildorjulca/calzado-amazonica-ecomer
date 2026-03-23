@@ -72,7 +72,7 @@ export async function generateMetadata(
         ? imageUrl
         : `${process.env.NEXT_PUBLIC_SITE_URL}/images/products/${imageUrl}`
 
-        console.log({fullImageUrl})
+    console.log({ fullImageUrl })
     return {
         title: product.nombre,
         description: product.descripcion,
@@ -134,8 +134,8 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
 
 
     return (
-        <div className="grid mt-5' grid-cols-1 md:grid-cols-3 gap-10 my-10 ">
-            <div className="col-span-2">
+        <div className="grid mt-0 md:mt-5' grid-cols-1 md:grid-cols-3 gap-10 my-10">
+            <div className="md:col-span-2">
                 {/* desktop */}
                 <ProductDesktopSlideshow
                     images={imagenes}
@@ -147,10 +147,10 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
                 <ProductMobileSlideshow
                     images={imagenes}
                     title=""
-                    className="block md:hidden bg-gray-100 rounded-sm p-5"
+                    className="block relative  md:hidden bg-gray-100 rounded-sm p-5"
                 />
             </div>
-            <div>
+            <div className="w-full px-4 md:px-0">
                 <h1 className={` ${titleFont.className} antialiased font-bold text-xl`}>
                     {product.nombre}
                 </h1>

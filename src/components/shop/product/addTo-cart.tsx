@@ -11,10 +11,10 @@ interface Props {
 
 const AddToCart = ({ loadingStock, handleAddToCart, quantity, onValueQuantityChanged }: Props) => {
     return (
-        <div>
+        <div className='w-full flex flex-col'>
             <div className='mb-4'>
                 <h3 className='text-sm font-semibold'>Cantidad</h3>
-                <div className='flex items-center gap-5 mt-2 '>
+                <div className='flex items-center gap-5 mt-2'>
                     <button
                         onClick={() => onValueQuantityChanged(-1)}
                         className='flex justify-center items-center hover:cursor-pointer'>
@@ -23,7 +23,7 @@ const AddToCart = ({ loadingStock, handleAddToCart, quantity, onValueQuantityCha
                     <span className='text-[20px]'>{quantity}</span>
                     <button
                         onClick={() => onValueQuantityChanged(+1)}
-                        className='flex justify-center items-center hover:cursor-pointer'>
+                        className=' w-full flex justify-center items-center hover:cursor-pointer'>
                         <PlusCircleIcon size={28} />
                     </button>
                 </div>
