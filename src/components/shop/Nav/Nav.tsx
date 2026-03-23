@@ -8,6 +8,7 @@ import { UserMenuContainer } from "../UserMenu/UserMenuContainer";
 import { CartDrawer } from "../drawer/cart-drawer";
 import { Heart } from "lucide-react";
 import Link from "next/link";
+import { FiltersDrawerMobile } from "../header/FiltersDrawerMobile";
 
 export const Nav = ({ channel }: { channel: string }) => {
 
@@ -24,7 +25,7 @@ export const Nav = ({ channel }: { channel: string }) => {
 					<UserMenuContainer />
 				</Suspense>
 			</div>
-			<div className="flex items-center">
+			<div className="hidden md:flex items-center">
 				<Link href={"/listFavorites"}>
 					<Heart strokeWidth={1} className="hover:cursor-pointer h-7 w-7 shrink-0" aria-hidden="true" />
 				</Link>
@@ -36,12 +37,17 @@ export const Nav = ({ channel }: { channel: string }) => {
 					{/* <CartNavItem channel={channel} /> */}
 				</Suspense>
 			</div>
-			<Suspense>
-				<MobileMenu>
+			<div className="block  md:hidden">
+				<Suspense>
+					<FiltersDrawerMobile />
+					{/* <MobileMenu>
 					<SearchBar channel={channel} />
 					<NavLinks channel={channel} />
-				</MobileMenu>
-			</Suspense>
+				</MobileMenu> */}
+				</Suspense>
+			</div>
+
+
 		</nav>
 
 	);
