@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Logo from "@/src/components/shop/header/Logo";
 import Provider from "@/components/provider/provider";
 
 
@@ -23,8 +22,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   // title: "Tienda Online | Calzado Amazonica",
   title: {
-    template: "%s Tienda online | Calzado Amazonica",
-    default: "Home - Calzado Amazonica"
+    template: "%s Tienda online | Zuela Amazonica",
+    default: "Home - Zuela Amazonica"
   },
   description: "Compra los mejores zapatos en línea con Calzado Amazonas",
   keywords: ["calzado", "tienda online", "zapatos", "moda"],
@@ -48,7 +47,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Calzado Amazonica",
+    title: "Zuela Amazonica",
     description: "Compra los mejores zapatos en línea",
     images: ["/og-image.png"],
   },
