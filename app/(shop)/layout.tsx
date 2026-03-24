@@ -11,7 +11,7 @@ const RootLayoutShop = ({ children }: Props) => {
         <LoaderProvider>
             <Header channel='' />
             {/* <div className="flex min-h-[calc(100dvh-64px)] flex-col"> */}
-            <div className='container m-auto mt-8 mb-16' >
+            <div className='container p-4 md:p-0  m-auto mt-8 mb-16' >
                 <main className="flex-1">
                     {children}
                     <Footer />

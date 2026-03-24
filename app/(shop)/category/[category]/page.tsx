@@ -8,7 +8,7 @@ interface Props {
   params: Promise<{
     category: string
   }>,
-  searchParams:Promise< {
+  searchParams: Promise<{
     page?: string;
     subCategory?: string;
     marca?: string;
@@ -51,7 +51,7 @@ const Categorypage = async ({ params, searchParams }: Props) => {
       ) : (
         <div>
           <div className="mb-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
 
               {/* Izquierda - Resultados */}
               <div className="text-sm text-gray-600">
@@ -62,7 +62,7 @@ const Categorypage = async ({ params, searchParams }: Props) => {
               </div>
 
               {/* Derecha - Filtros y Ordenamiento */}
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex sm:flex-row gap-3">
 
                 {/* Filtro por precio */}
                 <select

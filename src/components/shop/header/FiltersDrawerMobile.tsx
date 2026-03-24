@@ -15,10 +15,10 @@ export function FiltersDrawerMobile() {
     const [isOpen, setIsOpen] = useState(false)
 
     const categories = [
-        { name: "Zapatillas", href: "/categoria/zapatillas" },
-        { name: "Zapatos", href: "/categoria/zapatos" },
-        { name: "Botines y Botas", href: "/categoria/botines-y-botas" },
-        { name: "Sandalias", href: "/categoria/sandalias" },
+        { name: "Zapatillas", href: "/category/zapatillas" },
+        { name: "Zapatos", href: "/category/zapatos" },
+        { name: "Botines y Botas", href: "/category/botines-y-botas" },
+        { name: "Sandalias", href: "/category/sandalias" },
     ]
 
     return (
@@ -29,12 +29,12 @@ export function FiltersDrawerMobile() {
         >
             {/* BOTÓN PARA ABRIR DRAWER */}
             <DrawerTrigger asChild>
-                <Button
+                {/* <Button
                     variant="outline"
                     className="rounded-full shadow-sm border-gray-300 hover:bg-gray-100"
-                >
-                    <Menu className="w-5 h-5" />
-                </Button>
+                > */}
+                <Menu className="h-7 w-7 shrink-0" aria-hidden="true" />
+                {/* </Button> */}
             </DrawerTrigger>
 
             {/* CONTENIDO DEL DRAWER */}

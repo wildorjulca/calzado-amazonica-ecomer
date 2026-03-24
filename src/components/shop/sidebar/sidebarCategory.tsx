@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import SubCategoryDropdown from '../ShopWithSidebar/SubCategoryDropdown';
 import CategoryDropdown from '../ShopWithSidebar/CategoryDropdown';
 import MarcasDropdown from '../ShopWithSidebar/MarcasDropdown';
+import { Funnel, ListFilter } from 'lucide-react';
+import { FunnelChart } from 'recharts';
 
 interface Props {
     categorias: {
@@ -24,17 +26,16 @@ interface Props {
         count: number
     }[]
 }
+
 const SidebarCategory = ({ categorias, marcas, subcategorias }: Props) => {
 
     const [stickyMenu, setStickyMenu] = useState(false);
     const [productSidebar, setProductSidebar] = useState(false);
 
+    // Detectar scroll para ajustar posición del botón
     const handleStickyMenu = () => {
-        if (window.scrollY >= 80) {
-            setStickyMenu(true);
-        } else {
-            setStickyMenu(false);
-        }
+        if (window.scrollY >= 80) setStickyMenu(true);
+        else setStickyMenu(false);
     };
 
     useEffect(() => {
@@ -57,123 +58,48 @@ const SidebarCategory = ({ categorias, marcas, subcategorias }: Props) => {
         };
     }, [productSidebar]);
 
-
-    const category = [
-        "zapatillas",
-        "zapatos",
-        "botines-botas",
-        "sandalias",
-        "calzado-deportivo",
-        "calzado-infantil",
-        "pantuflas-calzado-casa",
-        "calzado-casual-verano",
-        "calzado-especializado",
-        "tacos-tacones",
-    ]
-
-
-    const subcategories = [
-        {
-            id: 1,
-            nombre: "Zapatillas Urbanas",
-            slug: "zapatillas-urbanas",
-            _count: { producto: 24 },
-        },
-        {
-            id: 2,
-            nombre: "Zapatillas Running",
-            slug: "zapatillas-running",
-            _count: { producto: 18 },
-        },
-        {
-            id: 3,
-            nombre: "Zapatillas Deportivas",
-            slug: "zapatillas-deportivas",
-            _count: { producto: 12 },
-        },
-    ]
-    // const marcas = [
-    //     {
-    //         id: 1,
-    //         nombre: "Nike",
-    //         slug: "nike",
-    //         imagen: "/images/marcas/nike.png",
-    //         count: 120,
-    //     },
-    //     {
-    //         id: 2,
-    //         nombre: "Adidas",
-    //         slug: "adidas",
-    //         imagen: "/images/marcas/adidas.png",
-    //         count: 95,
-    //     },
-    //     {
-    //         id: 3,
-    //         nombre: "Puma",
-    //         slug: "puma",
-    //         imagen: "/images/marcas/puma.png",
-    //         count: 63,
-    //     },
-    //     {
-    //         id: 4,
-    //         nombre: "Reebok",
-    //         slug: "reebok",
-    //         imagen: null,
-    //         count: 28,
-    //     },
-    //     {
-    //         id: 5,
-    //         nombre: "New Balance",
-    //         slug: "new-balance",
-    //         imagen: "/images/marcas/new-balance.png",
-    //         count: 41,
-    //     },
-    // ]
-
-
     return (
-        <div
-            className={`sidebar-content fixed xl:z-10 z-[9999] 
-        left-0 top-0 xl:translate-x-0 xl:static max-w-[310px]
-         xl:max-w-[270px] w-full transition duration-200 ${productSidebar ? "translate-x-0 bg-white p-5 h-screen overflow-y-auto"
-                    : "-translate-x-full"
-                }`}
-        >
+        <>
+            {/* OVERLAY NEGRO SUAVE */}
+            {productSidebar && (
+                <div
+                    onClick={() => setProductSidebar(false)}
+                    className="fixed inset-0 bg-black/20 bg-opacity-30 z-40 xl:hidden transition-opacity"
+                />
+            )}
 
+            {/* SIDEBAR DESLIZANTE */}
+            <div
+                className={`sidebar-content fixed xl:hidden z-50 top-0 left-0 h-full bg-white shadow-xl  transition-transform duration-300
+                    ${productSidebar ? "translate-x-0" : "-translate-x-full"} w-4/5 max-w-[310px] p-5 overflow-y-auto`}
+            >
+                {/* BOTÓN CERRAR */}
+                {/* <button
+                    onClick={() => setProductSidebar(false)}
+                    aria-label="Cerrar sidebar"
+                    className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-md bg-gray-100 hover:bg-gray-200 transition"
+                >
+                    <Funnel />
+                </button> */}
+
+                {/* CONTENIDO */}
+                <div className="flex flex-col gap-5 mt-5 mb-5">
+                    <CategoryDropdown categories={categorias} />
+                    <SubCategoryDropdown subcategory={subcategorias} />
+                    <MarcasDropdown marcas={marcas} />
+                </div>
+            </div>
+
+            {/* BOTÓN PARA ABRIR SIDEBAR */}
             <button
                 onClick={() => setProductSidebar(!productSidebar)}
-                aria-label="Botón para alternar la barra lateral de productos"
-                className={`xl:hidden absolute -right-12 sm:-right-8 flex items-center justify-center w-8 h-8 rounded-md bg-white shadow-md ${stickyMenu ? "lg:top-20 sm:top-34 top-35" : "lg:top-24 sm:top-39 top-37"
-                    }`}
+                aria-label="Abrir sidebar de filtros"
+                className={`xl:hidden fixed top-20 right-5 w-10 h-10 flex items-center justify-center rounded-md bg-white shadow-sm z-50`}
             >
-                <svg
-                    className="fill-current"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M10.0068 3.44714C10.3121 3.72703 10.3328 4.20146 10.0529 4.5068L5.70494 9.25H20C20.4142 9.25 20.75 9.58579 20.75 10C20.75 10.4142 20.4142 10.75 20 10.75H4.00002C3.70259 10.75 3.43327 10.5742 3.3135 10.302C3.19374 10.0298 3.24617 9.71246 3.44715 9.49321L8.94715 3.49321C9.22704 3.18787 9.70147 3.16724 10.0068 3.44714Z"
-                        fill=""
-                    />
-                    <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M20.6865 13.698C20.5668 13.4258 20.2974 13.25 20 13.25L4.00001 13.25C3.5858 13.25 3.25001 13.5858 3.25001 14C3.25001 14.4142 3.5858 14.75 4.00001 14.75L18.2951 14.75L13.9472 19.4932C13.6673 19.7985 13.6879 20.273 13.9932 20.5529C14.2986 20.8328 14.773 20.8121 15.0529 20.5068L20.5529 14.5068C20.7539 14.2876 20.8063 13.9703 20.6865 13.698Z"
-                        fill=""
-                    />
-                </svg>
+                <Funnel />
             </button>
-            <div className='flex flex-col gap-5'>
-                <CategoryDropdown categories={categorias} />
-                <SubCategoryDropdown subcategory={subcategorias} />
-                <MarcasDropdown marcas={marcas} />
-            </div>
-        </div>
+        </>
     )
 }
+
 export default SidebarCategory
