@@ -17,13 +17,13 @@ const AddToCart = ({ loadingStock, handleAddToCart, quantity, onValueQuantityCha
                 <div className='flex items-center gap-5 mt-2'>
                     <button
                         onClick={() => onValueQuantityChanged(-1)}
-                        className='flex justify-center items-center hover:cursor-pointer'>
+                        className='w-[28px] flex justify-center items-center hover:cursor-pointer'>
                         <MinusCircle size={28} />
                     </button>
                     <span className='text-[20px]'>{quantity}</span>
                     <button
                         onClick={() => onValueQuantityChanged(+1)}
-                        className=' w-full flex justify-center items-center hover:cursor-pointer'>
+                        className='w-[28px] flex justify-center items-center hover:cursor-pointer'>
                         <PlusCircleIcon size={28} />
                     </button>
                 </div>

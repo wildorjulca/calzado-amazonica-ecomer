@@ -24,10 +24,8 @@ const RootLayoutShop = ({ children }: Props) => {
     return (
         <LoaderProvider>
             <div className="min-h-screen flex flex-col">
-
                 <Header channel='' />
-
-                <main className="flex-1 container mx-auto p-4 md:p-0 mt-8">
+                <main className="flex-1 container mx-auto p-4 md:p-0 mt-4 md:mt-8">
                     {children}
                 </main>
 

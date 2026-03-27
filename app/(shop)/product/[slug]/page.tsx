@@ -134,7 +134,7 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
 
 
     return (
-        <div className="grid mt-0 md:mt-5' grid-cols-1 md:grid-cols-3 gap-10 my-10">
+        <div className="grid mt-0 md:mt-5' grid-cols-1 md:grid-cols-3 gap-10">
             <div className="md:col-span-2">
                 {/* desktop */}
                 <ProductDesktopSlideshow
@@ -150,7 +150,7 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
                     className="block relative  md:hidden bg-gray-100 rounded-sm p-5"
                 />
             </div>
-            <div className="w-full px-4 md:px-0">
+            <div className="w-full">
                 <h1 className={` ${titleFont.className} antialiased font-bold text-xl`}>
                     {product.nombre}
                 </h1>
@@ -163,7 +163,7 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
                     colores={product.coloresDisponibles || []}
                 />
                 <h3 className="font-bold">Descripción</h3>
-                <p className={` antialiased`}>
+                <p className={` antialiased mt-2`}>
                     {product.descripcion}
                 </p>
             </div>

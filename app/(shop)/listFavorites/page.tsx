@@ -27,7 +27,7 @@ const ListFavoritesPage = async () => {
   const isEmpty = !products || products.length === 0;
 
   return (
-    <div className="p-6">
+    <div className="">
       <h1 className="text-2xl mb-6 ">Tus productos favoritos ❤️</h1>
 
       {isEmpty ? (
