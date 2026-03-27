@@ -1,5 +1,3 @@
-import React from 'react'
-import { Box, MapPin, Settings } from 'lucide-react';
 
 const page = () => {
   return (

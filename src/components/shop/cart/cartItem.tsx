@@ -11,32 +11,51 @@ import QuantitySelector from './quantitySelector'
 interface Props {
     item: CartProduct
 }
+
 const CartItem = ({ item }: Props) => {
     const { removeProduct, updateQuantity } = useCartStore((state) => state)
 
-    // const 
     return (
         <div>
-            <div className=" w-full mb-2  border border-black flex  gap-5 pr-3">
-                {/* <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-01.jpg" alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="size-full object-cover" /> */}
-                <div className='size-30 shrink-0 overflow-hidden bg-gray-200'>
+            <div className="w-full mb-2 border border-black flex flex-row  gap-5 p-2 md:p-0">
+
+                {/* Imagen */}
+                <div className='size-24 md:size-30 shrink-0 overflow-hidden bg-gray-200 mx-auto sm:mx-0 relative'>
                     <Image
                         src={`/images/products/${item.imagen}`}
                         alt={item.nombre}
-                        width={120}
-                        height={120}
+                        fill
+                        // width={120}
+                        // height={120}
+                        className='object-cover w-full h-full'
                     />
                 </div>
 
-                <div className='w-full py-4'>
-                    <div className='flex items-center justify-between w-full'>
-                        <h3 className={`${textFont4.className} text-md text-gray-900`}>{item.nombre}</h3>
-                        <QuantitySelector
-                            quantity={item.cantidad}
-                            onQuantityChanged={(cantidad) => updateQuantity(item.varianteId, cantidad)}
-                        />
-                        <div className='flex items-center gap-2'>
-                            <p className={`text-black ${textFont3.className} `}>S/ {item.precio}</p>
+                {/* Contenido */}
+                <div className='w-full py-2 sm:py-4 flex flex-col gap-3'>
+
+                    {/* Top */}
+                    <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between w-full gap-1.5 md:gap-3'>
+
+                        {/* Nombre */}
+                        <h3 className={`${textFont4.className} text-md text-gray-900 break-words`}>
+                            {item.nombre}
+                        </h3>
+
+                        {/* Cantidad */}
+                        <div className='hidden md:block'>
+                            <QuantitySelector
+                                quantity={item.cantidad}
+                                onQuantityChanged={(cantidad) => updateQuantity(item.varianteId, cantidad)}
+                            />
+                        </div>
+
+
+                        {/* Precio + eliminar */}
+                        <div className='flex items-center gap-2 justify-between sm:justify-end'>
+                            <p className={`text-black ${textFont3.className}`}>
+                                S/ {item.precio}
+                            </p>
                             <X
                                 onClick={() => removeProduct(item.varianteId)}
                                 strokeWidth={2}
@@ -44,9 +63,19 @@ const CartItem = ({ item }: Props) => {
                             />
                         </div>
                     </div>
+
+                    {/* Info extra */}
                     <div>
-                        <p>Talla: {item.talla}</p>
+                        <p className='text-sm'>Talla: {item.talla}</p>
                     </div>
+
+                    <div className='block md:hidden'>
+                        <QuantitySelector
+                            quantity={item.cantidad}
+                            onQuantityChanged={(cantidad) => updateQuantity(item.varianteId, cantidad)}
+                        />
+                    </div>
+
                 </div>
             </div>
         </div>

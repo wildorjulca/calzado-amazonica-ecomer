@@ -35,8 +35,8 @@ const OrderSumary = () => {
     // const { itemsICart, subTotal, total, tax } =
     //     useCartStore.getState().getSumaryInformation();
     return (
-        <div className="mt-4">
-            <h2 className={`${textFont2.className} text-2xl font-bold tracking-widest antialiased mb-3`}>
+        <div className="mt-4 w-full">
+            <h2 className={`${textFont2.className} text-xl  md:text-2xl font-bold tracking-widest antialiased mb-3`}>
                 RESUMEN DEL PEDIDO
             </h2>
             <div className="flex w-full justify-between">

@@ -27,8 +27,8 @@ const CartList = () => {
 
 
     return (
-        <div className="mt-4">
-            <h2 className={`${textFont4.className} text-2xl font-bold tracking-widest`}>
+        <div className="mt-1 md:mt-4">
+            <h2 className={`${textFont4.className} text-xl md:text-2xl font-bold tracking-widest`}>
                 TU CARRITO
             </h2>
             <div className='bg-gray-200 py-2.5 px-1.5 mt-4 flex flex-col border border-gray-300 mb-4'>
