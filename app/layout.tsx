@@ -52,8 +52,11 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
   },
   verification: {
-    google: "11diTBZ21KUh3VX80X2YflTHrYn0QrLkGT6csg8roC4",
+    google: "google28b76eb64ad06fed",
   },
+  // verification: {
+  //   google: "11diTBZ21KUh3VX80X2YflTHrYn0QrLkGT6csg8roC4",
+  // },
 };
 {/* <meta name="google-site-verification" content="11diTBZ21KUh3VX80X2YflTHrYn0QrLkGT6csg8roC4" /> */}
 export default function RootLayout({
