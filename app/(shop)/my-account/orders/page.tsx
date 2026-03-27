@@ -1,6 +1,8 @@
 import { getPedidosUser } from '@/src/actions/shop/my-account/order'
+import { formatDate } from '@/src/utils/format-date'
 import { RotateCcw } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 const OrdersPage = async () => {
@@ -28,8 +30,30 @@ const OrdersPage = async () => {
 
   const { orders } = response
 
+  const getEstadoStyles = (estado: string) => {
+    switch (estado) {
+      case 'pendiente': return 'bg-gray-400 text-white'
+      case 'confirmado': return 'bg-blue-500 text-white'
+      case 'preparando': return 'bg-purple-500 text-white'
+      case 'enviado': return 'bg-indigo-500 text-white'
+      case 'entregado': return 'bg-green-600 text-white'
+      case 'cancelado': return 'bg-red-500 text-white'
+      default: return 'bg-gray-300'
+    }
+  }
+
+  const getEstadoPagoStyles = (estado: string) => {
+    switch (estado) {
+      case 'pendiente': return 'bg-yellow-500 text-white'
+      case 'pagado': return 'bg-green-600 text-white'
+      case 'rechazado': return 'bg-red-500 text-white'
+      case 'reembolsado': return 'bg-orange-500 text-white'
+      default: return 'bg-gray-300'
+    }
+  }
+
   return (
-    <div className='w-full h-screen'>
+    <div className='w-full h-auto'>
       <h3 className='text-4xl'>Pedidos</h3>
 
       <div className='w-full mt-8'>
@@ -39,13 +63,15 @@ const OrdersPage = async () => {
             className='border border-gray-500 w-full mb-4'
           >
             {/* Header Pedido */}
-            <div className='px-4 flex gap-5 w-full bg-gray-200 border-b border-gray-300 py-3'>
-              <div className='flex justify-between w-full items-center'>
-                <div className='flex gap-10'>
+            <div className='px-4 flex flex-col md:flex-row gap-5 w-full bg-gray-200 border-b border-gray-300 py-3'>
+
+              <div className='flex justify-between w-full items-start md:items-center flex-col md:flex-row gap-4'>
+
+                <div className='flex flex-col sm:flex-row gap-4 sm:gap-10'>
                   <div className='flex flex-col justify-center'>
                     <p>FECHA DEL PEDIDO</p>
                     <p className='font-semibold'>
-                      {new Date(ped.fecha).toDateString()}
+                      {formatDate(ped.fecha)}
                     </p>
                   </div>
 
@@ -57,12 +83,18 @@ const OrdersPage = async () => {
                   </div>
                 </div>
 
-                <div className='flex flex-col items-end'>
+                <div className='flex flex-col md:items-end'>
                   <p>{ped.codigo_pedido}</p>
-                  <span className='bg-yellow-500 text-white rounded-sm text-sm px-2 py-1'>
-                    Aprobando el pago
-                  </span>
+                  <div className='flex flex-wrap items-center gap-2.5 mt-1'>
+                    <span className={`${getEstadoStyles(ped.estado ?? "")} rounded-sm text-sm px-2 py-1`}>
+                      {ped.estado}
+                    </span>
+                    <span className={`${getEstadoPagoStyles(ped.estado_pago ?? "")} rounded-sm text-sm px-2 py-1`}>
+                      Pago {ped.estado_pago}
+                    </span>
+                  </div>
                 </div>
+
               </div>
             </div>
 
@@ -71,12 +103,12 @@ const OrdersPage = async () => {
               {ped.item.map((item, index) => (
                 <div key={index}>
 
-                  <div className='flex w-full justify-between items-start gap-8'>
+                  <div className='flex flex-col lg:flex-row w-full justify-between items-start gap-4 lg:gap-8'>
 
                     {/* Producto */}
-                    <div className='flex gap-4 flex-1 min-w-0'>
+                    <div className='flex flex-col sm:flex-row gap-4 flex-1 min-w-0'>
 
-                      {/* Imagen fija */}
+                      {/* Imagen */}
                       <div className='w-[80px] h-[80px] shrink-0'>
                         <Image
                           className='bg-gray-100 border object-cover w-full h-full'
@@ -87,38 +119,48 @@ const OrdersPage = async () => {
                         />
                       </div>
 
-                      {/* Información */}
+                      {/* Info */}
                       <div className='flex flex-col gap-2 flex-1 min-w-0'>
-                        <div className='min-w-0'>
-                          <h3 className='text-black font-semibold truncate'>
-                            {item.nombre}
-                          </h3>
+                        <div className='flex flex-col gap-2 flex-1 min-w-0'>
 
-                          <p className='text-sm break-words'>
-                            {item.descripcion}
-                          </p>
+                          <div className='min-w-0'>
+                            <h3
+                              className='text-black font-medium break-words line-clamp-2'
+                              title={item.nombre}
+                            >
+                              {item.nombre}
+                            </h3>
+
+                            <p className='text-sm break-words line-clamp-2 mt-1.5'>
+                              {item.descripcion}
+                            </p>
+                          </div>
+
+                          <div>
+                            <p className='font-semibold text-sm'>
+                              cantidad {item.cantidad} | Talla: {item.talla} | color: {item.color}
+                            </p>
+                          </div>
+
                         </div>
 
-                        <div>
-                          <p className='font-semibold text-sm'>
-                            cantidad {item.cantidad} |
-                            Talla: {item.talla} |
-                            color: {item.color}
-                          </p>
-                        </div>
+
                       </div>
                     </div>
 
                     {/* Acciones */}
-                    <div className='flex flex-col gap-3 w-[230px] shrink-0'>
-                      <button className='flex items-center gap-3'>
+                    <div className='flex flex-col gap-3 w-full sm:w-[230px] shrink-0'>
+                      <button className='flex items-center gap-3 w-full sm:w-auto'>
                         <RotateCcw strokeWidth={1} />
                         <span>Hacer pedido de nuevo</span>
                       </button>
 
-                      <button className='border-black border bg-gray-300 text-black w-full p-1'>
+                      <Link
+                        href={`/my-account/orders/${ped.codigo_pedido}`}
+                        className='border-black border bg-gray-300 text-black w-full p-1 text-center'
+                      >
                         Ver detalles del pedido
-                      </button>
+                      </Link>
 
                       <button className='border-black border bg-gray-600 text-white w-full p-1'>
                         Hacer un cambio o devolución

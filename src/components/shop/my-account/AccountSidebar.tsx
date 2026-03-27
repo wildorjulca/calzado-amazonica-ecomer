@@ -19,7 +19,7 @@ const AccountSidebar = () => {
 
     // console.log(isActive.get(""))
     return (
-        <div className='w-2xs bg-white shadow-md border rounded-xs'>
+        <div className='w-full md:w-2xs bg-white shadow-md border rounded-xs'>
             <div className='flex flex-col'>
                 {links.map(item => {
                     const isActive = item.href === pathname

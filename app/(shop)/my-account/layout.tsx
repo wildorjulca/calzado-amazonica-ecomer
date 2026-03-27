@@ -16,8 +16,8 @@ const LayoutMyaccount = async ({ children }: Props) => {
         redirect("/")
     }
     return (
-        <section className="h-screen">
-            <div className="">
+        <section className=" w-full">
+            <div className="w-full">
                 <div className='bg-white p-5 rounded-xs border shadow-md mb-4'>
                     <div className='flex items-end gap-2.5'>
                         <AvatarMyAccount name={session.user.name!} />
@@ -28,14 +28,10 @@ const LayoutMyaccount = async ({ children }: Props) => {
 
                     </div>
                 </div>
-                {/* <Title
-                    title="Mi Cuenta"
-                    subTitle="Gestiona tu información personal, pedidos y direcciones desde un solo lugar."
-                /> */}
 
                 <div className="flex flex-col xl:flex-row gap-8">
                     <AccountSidebar />
-                    <main className="flex-1 bg-white rounded-xl shadow-md border border-gray-100 p-6 h-auto">
+                    <main className="flex-1 bg-white rounded-xl shadow-md border border-gray-100 p-4 md:p-6 overflow-hidden h-screen overflow-y-scroll">
                         {children}
                     </main>
                 </div>
