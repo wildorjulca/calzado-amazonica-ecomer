@@ -16,19 +16,24 @@ import 'swiper/css/thumbs';
 import './slideshow.css';
 import ImageSkeleton from '../skeleton/ImageSkeleton';
 import ContentLoader from 'react-content-loader';
+import AddTofavorites from '../product/addTo-favorites';
 // import { ProductImage } from '../product-image/ProductImage';
 
 
-
+// TODO:poner si esta en oferta y  opcion de favoritos
 interface Props {
     images: string[];
     title: string;
+    isFavorite: boolean; // !!  Verificar si el usuario tiene como favoritos a este producto
+    producto_id: number;   // !! recibe el id para hacer la accion en la ui de AddTofavorites
+    // favorit
     className?: string;
+
 }
 
 
 
-export const ProductDesktopSlideshow = ({ images, title, className }: Props) => {
+export const ProductDesktopSlideshow = ({ images, title, isFavorite, producto_id, className }: Props) => {
 
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperObject>();
 
@@ -45,6 +50,11 @@ export const ProductDesktopSlideshow = ({ images, title, className }: Props) => 
 
     return (
         <div className={className}>
+
+            <AddTofavorites
+                isFavorite={isFavorite}
+                producto_id={producto_id}
+            />
             <Swiper
 
                 style={{

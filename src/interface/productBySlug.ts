@@ -17,4 +17,5 @@ export interface ProductSlug {
   en_oferta: boolean;
 
   coloresDisponibles: Color[];
+  isFavorite: boolean
 }

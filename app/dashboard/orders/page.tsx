@@ -58,12 +58,12 @@ export default async function OrdersPage() {
     <div className="">
       <h1 className="mb-4 text-2xl font-medium">Pedidos</h1>
       {/* <Datatable
-        data={response.pedidos??[]}
+        data={response.pedidos ?? []}
         columns={columns}
         globalFilterColumn="name"
         caption="List of users."
       /> */}
-      {/* </div> */}
+      {/* </div>  */}
     </div>
   )
 }

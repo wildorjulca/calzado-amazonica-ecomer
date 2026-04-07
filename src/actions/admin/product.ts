@@ -38,7 +38,10 @@ export const getProducts = async () => {
                 subcategoria: subcategoria.nombre,
                 categoria: subcategoria.categoria.nombre,
                 estado: prod.activo,
-                stock: stok_total
+                stock: stok_total,
+                en_oferta: prod.en_oferta,
+                es_nuevo: prod.nuevo,
+                precio_base_venta: Number(prod.precio_base_venta),
 
             }
 

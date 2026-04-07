@@ -3,160 +3,30 @@
 import { Badge } from "@/components/ui/badge";
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button";
-import { MoreHorizontal } from "lucide-react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import MenutAcciones from "./menu-acciones";
+import { Product } from "../interface/product.type";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Product = {
-    id: number;
-    nombre: string;
-    url_imagen: string;
-    total_vendidos: number;
-    marca: string | undefined;
-    subcategoria: string;
-    categoria: string;
-    stock: number;
-    estado: boolean;
-}
 
 interface ProductActionsProps {
     product: Product
 }
 
 function ProductActions({ product }: ProductActionsProps) {
-    const router = useRouter()
+
+
+    console.log("product actons: ", product)
 
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0">
-                    <MoreHorizontal className="h-4 w-4" />
-                </Button>
-            </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end" className="w-56">
-
-                {/* ================= GESTIÓN ================= */}
-                <DropdownMenuLabel>Gestión</DropdownMenuLabel>
-
-                <DropdownMenuItem asChild>
-                    <Link href={`/admin/productos/${product.id}`}>
-                        Ver detalle
-                    </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem asChild>
-                    <Link href={`/admin/productos/editar/${product.id}`}>
-                        Editar
-                    </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem asChild>
-                    <Link href={`/admin/productos/${product.id}/variantes`}>
-                        Gestionar variantes
-                    </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem asChild>
-                    <Link href={`/admin/productos/${product.id}/imagenes`}>
-                        Gestionar imágenes
-                    </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem asChild>
-                    <Link href={`/admin/productos/${product.id}/proveedores`}>
-                        Gestionar proveedores
-                    </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuSeparator />
-
-                {/* ================= COMERCIAL ================= */}
-                <DropdownMenuLabel>Comercial</DropdownMenuLabel>
-
-                <DropdownMenuItem asChild>
-                    <Link href={`/admin/productos/${product.id}/ventas`}>
-                        Ver ventas
-                    </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem asChild>
-                    <Link href={`/admin/productos/${product.id}/pedidos`}>
-                        Ver pedidos
-                    </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem asChild>
-                    <Link href={`/admin/productos/${product.id}/resenas`}>
-                        Ver reseñas
-                    </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuSeparator />
-
-                {/* ================= MARKETING ================= */}
-                <DropdownMenuLabel>Marketing</DropdownMenuLabel>
-
-                <DropdownMenuItem>
-                    {/* {product.destacado ? "Quitar destacado" : "Marcar como destacado"} */}
-                </DropdownMenuItem>
-
-                <DropdownMenuItem>
-                    {/* {product.en_oferta ? "Quitar oferta" : "Poner en oferta"} */}
-                </DropdownMenuItem>
-
-                <DropdownMenuItem>
-                    {/* {product.nuevo ? "Quitar nuevo" : "Marcar como nuevo"} */}
-                </DropdownMenuItem>
-
-                <DropdownMenuSeparator />
-
-                {/* ================= INVENTARIO ================= */}
-                <DropdownMenuLabel>Inventario</DropdownMenuLabel>
-
-                <DropdownMenuItem asChild>
-                    <Link href={`/admin/productos/${product.id}/stock`}>
-                        Ver stock por variante
-                    </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuItem asChild>
-                    <Link href={`/admin/productos/${product.id}/historial-stock`}>
-                        Historial de stock
-                    </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuSeparator />
-
-                {/* ================= ESTADO ================= */}
-                <DropdownMenuLabel>Estado</DropdownMenuLabel>
-
-                <DropdownMenuItem>
-                    {product.estado ? "Desactivar producto" : "Activar producto"}
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                    className="text-red-600"
-                //   disabled={hasSales}
-                >
-                    {/* {hasSales ? "No se puede eliminar (tiene ventas)" : "Eliminar producto"} */}
-                    No se puede eliminar (tiene ventas)" : "Eliminar producto
-
-                </DropdownMenuItem>
-
-            </DropdownMenuContent>
-        </DropdownMenu>
+        <MenutAcciones
+            product={product}
+            estado={{
+                en_oferta: product.en_oferta,
+                es_nuevo: product.es_nuevo
+            }}
+        />
     )
 }
 export const columns: ColumnDef<Product>[] = [
@@ -190,6 +60,15 @@ export const columns: ColumnDef<Product>[] = [
     {
         accessorKey: "marca",
         header: "Marca",
+        cell: ({ row }) => {
+
+            const marca = row.getValue("marca") as string
+
+            return (
+                <p>{marca ?? "N/A"}</p>
+
+            )
+        }
     },
     {
         accessorKey: "categoria",
@@ -278,6 +157,7 @@ export const columns: ColumnDef<Product>[] = [
     },
     {
         id: "actions",
+        header: "Acciones",
         cell: ({ row }) => {
             return <ProductActions product={row.original} />
         }

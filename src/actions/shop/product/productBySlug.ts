@@ -1,6 +1,7 @@
 
 'use server'
 
+import { auth } from "@/auth";
 import { prisma } from "@/lib"
 import { ProductSlug } from "@/src/interface/productBySlug";
 
@@ -13,6 +14,11 @@ type GetProductBySlugResponse =
     | { ok: false; message: string }
 
 export const getProductBySlug = async ({ slug }: Props): Promise<GetProductBySlugResponse> => {
+
+    const session = await auth()
+    const user = session?.user
+    const userId = Number(user?.id)
+
 
     try {
         const product = await prisma.producto.findFirst({
@@ -56,9 +62,15 @@ export const getProductBySlug = async ({ slug }: Props): Promise<GetProductBySlu
                             select: { id: true, valor: true }
                         }
                     }
-                }
+                },
+                wishlist: userId ? {
+                    where: {
+                        usuario_id: userId
+                    }
+                } : false
             }
         })
+        console.log("Product by slug: ", product)
 
         if (!product) {
             return { ok: false, message: "No product" }
@@ -79,6 +91,8 @@ export const getProductBySlug = async ({ slug }: Props): Promise<GetProductBySlu
             ).values()
         )
 
+        const isFavorite = userId ? product.wishlist.length > 0 : false
+
         return {
             ok: true,
             product: {
@@ -90,7 +104,8 @@ export const getProductBySlug = async ({ slug }: Props): Promise<GetProductBySlu
                 precio_descuento: Number(product.precio_descuento),
                 porcentaje_descuento: Number(product.porcentaje_descuento),
                 en_oferta: product.en_oferta ?? false,
-                coloresDisponibles: coloresDisponibles
+                coloresDisponibles: coloresDisponibles,
+                isFavorite: isFavorite
             },
 
         }

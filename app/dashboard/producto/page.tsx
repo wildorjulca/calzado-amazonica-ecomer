@@ -6,6 +6,7 @@ import { columns } from './ui/columns'
 const page = async () => {
 
   const response = await getProducts()
+  
 
   if (!response.ok) {
     return (

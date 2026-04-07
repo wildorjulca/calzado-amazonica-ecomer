@@ -42,13 +42,14 @@ const main = async () => {
         // 🔥 AHORA SÍ
         prisma.variante_producto.deleteMany(),
         prisma.wishlist.deleteMany(),
+        prisma.marca.deleteMany(),
         prisma.producto.deleteMany(),
         // prisma.genero_producto.deleteMany(),
 
         // 🔥 DESPUÉS SUS DEPENDENCIAS
         prisma.talla.deleteMany(),
         prisma.color.deleteMany(),
-        prisma.marca.deleteMany(),
+
         prisma.genero_producto.deleteMany(),
 
         prisma.subcategoria.deleteMany(),
@@ -112,7 +113,7 @@ const main = async () => {
         const categoriaIndex = await prisma.categoria.findFirst({ where: { nombre: item.categoriaNombre } })
         const subcategoriaIndex = await prisma.subcategoria.findFirst({ where: { nombre: item.subcategoriaNombre } })
 
-        if (!generoIndex  || !categoriaIndex || !subcategoriaIndex) {
+        if (!generoIndex || !categoriaIndex || !subcategoriaIndex) {
             console.log(`Faltan los IDs requeridos para el producto: ${item.nombre}`)
             console.log({ producto: item.nombre, generoIndex, marcaIndex, categoriaIndex, subcategoriaIndex })
             continue

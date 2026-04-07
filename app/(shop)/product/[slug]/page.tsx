@@ -1,5 +1,6 @@
 import { titleFont } from "@/config/fonts"
 import { getImagesProductByColor, getProductBySlug } from "@/src/actions/shop/product/productBySlug"
+import AddTofavorites from "@/src/components/shop/product/addTo-favorites"
 import ProductVariants from "@/src/components/shop/product/product-variants"
 import { ProductDesktopSlideshow } from "@/src/components/shop/slideshow/ProductDesktopSlideshow"
 import { ProductMobileSlideshow } from "@/src/components/shop/slideshow/ProductMobileSlideshow"
@@ -128,6 +129,9 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
 
 
     const { product } = res
+
+
+    console.log(product)
     // const colorIdImg: number | undefined = product?.coloresDisponibles[0].id || 
 
     const { imagenes } = await getImagesProductByColor({ productId: product.id || 0, colorId: Number(colorId) })
@@ -140,13 +144,18 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
                 <ProductDesktopSlideshow
                     images={imagenes}
                     title=""
-                    className="hidden md:block"
+                    isFavorite={product.isFavorite}
+                    producto_id={product.id}
+                    className="hidden md:block relative"
                 />
+
 
                 {/* Mobile */}
                 <ProductMobileSlideshow
                     images={imagenes}
                     title=""
+                    isFavorite={product.isFavorite}
+                    producto_id={product.id}
                     className="block relative  md:hidden bg-gray-100 rounded-sm p-5"
                 />
             </div>
@@ -155,7 +164,7 @@ const ProductSlugPage = async ({ params, searchParams }: Props) => {
                     {product.nombre}
                 </h1>
 
-                <p className="text-lg mb-5">${product.precio_base_venta}</p>
+                <p className={`${titleFont.className} text-lg mb-5 antialiased`}>S/{product.precio_base_venta}</p>
                 <ProductVariants
                     productSlug={product}
                     imagenes={imagenes}

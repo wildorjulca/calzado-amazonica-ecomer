@@ -315,6 +315,83 @@ export const initialData: SeedData = {
                 { colorNombre: "Turquesa", tallaValor: "41", cantidad: 6 },
             ]
         },
+        // Calzado especializado
+        {
+            nombre: "Calzado de seguridad Kotka Werken ",
+            slug: "Calzado-de-seguridad-Kotka-Werken",
+            descripcion: "Calzado de seguridad Kotka Werken. Calzado de seguridad con puntera de acero, suela antideslizante y diseño ergonómico para protección y comodidad en el trabajo.",
+            precio_base: 150,
+            generoNombre: "Hombre",
+            categoriaNombre: "Calzado Especializado",
+            subcategoriaNombre: "Calzado de Seguridad",
+            marcaNombre: "",
+            nuevo: true,
+            caracteristicas: `
+            • Material: Cuero resistente y puntera de acero
+            • Suela: Goma antideslizante
+            • Uso: Trabajo y seguridad industrial
+            `,
+            imagenes: [
+                { colorNombre: "Negro", url: "100.png" },
+                { colorNombre: "Negro", url: "101.png" },
+            ],
+            variantes: [
+                { colorNombre: "Negro", tallaValor: "38", cantidad: 6 },
+                { colorNombre: "Negro", tallaValor: "39", cantidad: 6 },
+                { colorNombre: "Negro", tallaValor: "40", cantidad: 6 },
+            ],
+
+        },
+        {
+            nombre: "Calzado de seguridad Grizzly Werken",
+            slug: "Calzado-de-seguridad-Grizzly-Werken",
+            descripcion: "Calzado de seguridad Grizzly Werken. Calzado de seguridad con puntera de acero, suela antideslizante y diseño ergonómico para protección y comodidad en el trabajo.",
+            precio_base: 150,
+            generoNombre: "Hombre",
+            categoriaNombre: "Calzado Especializado",
+            subcategoriaNombre: "Calzado de Seguridad",
+            marcaNombre: "",
+            nuevo: true,
+            caracteristicas: `
+            • Material: Cuero resistente y puntera de acero
+            • Suela: Goma antideslizante
+            • Uso: Trabajo y seguridad industrial
+            `,
+            imagenes: [
+                { colorNombre: "Marrón", url: "102.png" },
+                { colorNombre: "Marrón", url: "103.png" },
+            ],
+            variantes: [
+                { colorNombre: "Marrón", tallaValor: "38", cantidad: 6 },
+                { colorNombre: "Marrón", tallaValor: "39", cantidad: 6 },
+                { colorNombre: "Marrón", tallaValor: "40", cantidad: 6 },
+            ],
+        },
+        {
+            nombre: "Calzado de Seguridad Eins Dielectrico Kofi NTP ISO 20345 Marrón",
+            slug: "Calzado-de-Seguridad-Eins-Dielectrico-Kofi-NTP-ISO-20345-Marrón",
+            descripcion: "Calzado de seguridad Eins Dielectrico Kofi NTP ISO 20345 Marrón. Calzado de seguridad con puntera de acero, suela antideslizante y diseño ergonómico para protección y comodidad en el trabajo.",
+            precio_base: 150,
+            generoNombre: "Hombre",
+            categoriaNombre: "Calzado Especializado",
+            subcategoriaNombre: "Calzado de Seguridad",
+            marcaNombre: "",
+            nuevo: true,
+            caracteristicas: `
+            • Material: Cuero resistente y puntera de acero
+            • Suela: Goma antideslizante    
+            • Uso: Trabajo y seguridad industrial
+            `,
+            imagenes: [
+                { colorNombre: "Marrón", url: "104.png" },
+                { colorNombre: "Marrón", url: "105.png" },
+            ],
+            variantes: [
+                { colorNombre: "Marrón", tallaValor: "38", cantidad: 6 },
+                { colorNombre: "Marrón", tallaValor: "39", cantidad: 6 },
+                { colorNombre: "Marrón", tallaValor: "40", cantidad: 6 },
+            ],
+        },
 
         // ** subcatgegoria zapatillas-casuales
 
@@ -474,6 +551,8 @@ export const initialData: SeedData = {
                 { colorNombre: "Negro", tallaValor: "42", cantidad: 6 },
             ],
         },
+
+        // Zandalias
         {
             nombre: "Nike Air Max Cirro",
             slug: "Nike-Air-Max-Cirro",
@@ -509,6 +588,76 @@ export const initialData: SeedData = {
                 { colorNombre: "Turquesa", tallaValor: "40", cantidad: 6 },
                 { colorNombre: "Turquesa", tallaValor: "41", cantidad: 6 },
                 { colorNombre: "Turquesa", tallaValor: "42", cantidad: 6 },
+            ],
+        },
+        {
+            nombre: "Sandalias Deportivas Nike Victori One",
+            slug: "Sandalias-Deportivas-Nike-Victori-One",
+            descripcion: "Las sandalias Nike Victori One combinan un diseño moderno con la comodidad de una plantilla acolchada, ofreciendo un estilo versátil para cualquier ocasión. Con correas ajustables y una suela duradera, estas sandalias son perfectas para mantener tus pies frescos y cómodos durante todo el día.",
+            precio_base: 120,
+            generoNombre: "Hombre",
+            categoriaNombre: "Sandalias",
+            subcategoriaNombre: "Sandalias Deportivas",
+            marcaNombre: "Nike",
+            nuevo: true,
+            caracteristicas: `
+            • Material: Malla y cuero sintético
+            • Suela: Goma con cámara Air
+            • Uso: Urbano y caminata
+            `,
+            imagenes: [
+                { colorNombre: "Blanco", url: "106.png" },
+                { colorNombre: "Blanco", url: "107.png" },
+                { colorNombre: "Blanco", url: "108.png" },
+                { colorNombre: "Blanco", url: "109.png" },
+                { colorNombre: "Negro", url: "110.png" },
+                { colorNombre: "Negro", url: "111.png" },
+                { colorNombre: "Negro", url: "112.png" },
+
+            ],
+            variantes: [
+                { colorNombre: "Blanco", tallaValor: "39", cantidad: 6 },
+                { colorNombre: "Blanco", tallaValor: "40", cantidad: 6 },
+                { colorNombre: "Blanco", tallaValor: "41", cantidad: 6 },
+                { colorNombre: "Blanco", tallaValor: "42", cantidad: 6 },
+                { colorNombre: "Negro", tallaValor: "39", cantidad: 6 },
+                { colorNombre: "Negro", tallaValor: "40", cantidad: 6 },
+                { colorNombre: "Negro", tallaValor: "41", cantidad: 6 },
+                { colorNombre: "Negro", tallaValor: "42", cantidad: 6 },
+
+            ],
+        },
+        {
+            nombre: "Sandalias Nike Offcourt",
+            slug: "Sandalias-Nike-Offcourt",
+            descripcion: "Las sandalias Nike Offcourt combinan un diseño moderno con la comodidad de una plantilla acolchada, ofreciendo un estilo versátil para cualquier ocasión. Con correas ajustables y una suela duradera, estas sandalias son perfectas para mantener tus pies frescos y cómodos durante todo el día.",
+            precio_base: 150,
+            generoNombre: "Hombre",
+            categoriaNombre: "Sandalias",
+            subcategoriaNombre: "Sandalias Deportivas",
+            marcaNombre: "Nike",
+            nuevo: true,
+            caracteristicas: `
+            • Material: Malla y cuero sintético
+            • Suela: Goma con cámara Air
+            • Uso: Urbano y caminata
+            `,
+            imagenes: [
+                { colorNombre: "Marrón", url: "113.png" },
+                { colorNombre: "Marrón", url: "114.png" },
+                { colorNombre: "Marrón", url: "115.png" },
+                { colorNombre: "Negro", url: "116.png" },
+                { colorNombre: "Negro", url: "117.png" },
+            ],
+            variantes: [
+                { colorNombre: "Marrón", tallaValor: "39", cantidad: 6 },
+                { colorNombre: "Marrón", tallaValor: "40", cantidad: 6 },
+                { colorNombre: "Marrón", tallaValor: "41", cantidad: 6 },
+                { colorNombre: "Marrón", tallaValor: "42", cantidad: 6 },
+                { colorNombre: "Negro", tallaValor: "39", cantidad: 6 },
+                { colorNombre: "Negro", tallaValor: "40", cantidad: 6 },
+                { colorNombre: "Negro", tallaValor: "41", cantidad: 6 },
+                { colorNombre: "Negro", tallaValor: "42", cantidad: 6 },
             ],
         },
 
@@ -716,9 +865,6 @@ export const initialData: SeedData = {
 
             ],
         },
-
-
-
 
 
 

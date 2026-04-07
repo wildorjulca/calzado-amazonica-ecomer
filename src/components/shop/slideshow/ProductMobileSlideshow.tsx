@@ -11,22 +11,28 @@ import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
 
 import './slideshow.css';
+import AddTofavorites from '../product/addTo-favorites';
 
 
 
 interface Props {
   images: string[];
   title: string;
+  isFavorite: boolean; // !!  Verificar si el usuario tiene como favoritos a este producto
+  producto_id: number;   // !! recibe el id para hacer la accion en la ui de AddTofavorites
   className?: string;
 }
 
-
-
-export const ProductMobileSlideshow = ({ images, title, className }: Props) => {
+export const ProductMobileSlideshow = ({ images, isFavorite, producto_id, title, className }: Props) => {
 
 
   return (
     <div className={className}>
+
+      <AddTofavorites
+        isFavorite={isFavorite}
+        producto_id={producto_id}
+      />
 
       <Swiper
         style={{
@@ -43,17 +49,6 @@ export const ProductMobileSlideshow = ({ images, title, className }: Props) => {
 
         {
           images.map(image => (
-            // <SwiperSlide key={image}>
-            //   <Image
-            //     // width={600}
-            //     // height={500}
-            //     src={`/images/products/${image}`}
-            //     alt={title}
-            //     fill
-            //     // className="object-fill"
-            //     className="object-contain"
-            //   />
-            // </SwiperSlide>
             <SwiperSlide key={image}>
               <div className="relative w-full h-[400px]">
                 <Image
@@ -64,7 +59,6 @@ export const ProductMobileSlideshow = ({ images, title, className }: Props) => {
                 />
               </div>
             </SwiperSlide>
-
           ))
         }
       </Swiper>
